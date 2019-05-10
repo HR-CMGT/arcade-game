@@ -86,7 +86,6 @@ class DebugPanel extends HTMLElement{
 
         this.rootElement = document.createElement('root')
         template.appendChild(this.rootElement)
-        console.log(template)
         
         // axes
         this.Axes = axes
