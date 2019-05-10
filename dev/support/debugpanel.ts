@@ -104,9 +104,7 @@ class DebugPanel extends HTMLElement{
             
         }
 
-        
-        let game = document.getElementsByTagName("game")[0]
-        game.appendChild(this)
+        document.body.appendChild(this)
     }
 
     private createListenersForButtons() {
