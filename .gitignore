@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+.cache
+
+symbols.json
+
+node_modules
+docs/js
