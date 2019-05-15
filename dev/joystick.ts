@@ -1,6 +1,11 @@
 class Joystick {
 
     private readonly DEBUG : boolean = true;
+    // BUT1 and BUT2 are the indexes of the redirect function. 
+    // When both are pressed, redirect to homepage
+    private readonly BUT1 : number = 1
+    private readonly BUT2 : number = 2
+    private readonly REDIRECT_URL : string = "http://hr-cmgt.github.io/arcade-server"
 
     // FIELDS
     // Buttons
@@ -87,6 +92,12 @@ class Joystick {
                 } else {
                     this.buttons[index] = false
                 }
+                if(this.buttonPressed(gamepad.buttons[this.BUT1]) &&
+                   this.buttonPressed(gamepad.buttons[this.BUT2]) &&
+                   (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||
+                    !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
+                       window.location.href = this.REDIRECT_URL
+                   }
             }
             
             // gamepad has 4 axes, first is x, second is y
