@@ -1,119 +1,93 @@
 class Joystick {
 
-    private readonly DEBUG : boolean = true;
+    private readonly DEBUG: boolean = true;
     // BUT1 and BUT2 are the indexes of the redirect function. 
     // When both are pressed, redirect to homepage
-    private readonly BUT1 : number = 1
-    private readonly BUT2 : number = 2
-    private readonly REDIRECT_URL : string = "http://hr-cmgt.github.io/arcade-server"
+    private readonly BUT1: number = 1
+    private readonly BUT2: number = 2
+    private readonly REDIRECT_URL: string = "http://hr-cmgt.github.io/arcade-server"
 
     // FIELDS
-    // Buttons
-    private buttons:boolean[]   = []
-    private buttonEvents:Event[]= []
-    private numberOfBUttons     = 0
+    private numberOfBUttons = 0
+    private axes: number[]  = []
 
-    // Axes
-    private x: number           = 0
-    private y: number           = 0
+    private gamepad: Gamepad
+    private previousGamepad: Gamepad
 
-    private axes: number[]      = []
+    private isConnected: boolean = false
 
-    private gamepad : Gamepad
-    private previousGamepad : Gamepad
-
-    private isConnected : boolean = false
-
-    private debugPanel : DebugPanel
+    private debugPanel: DebugPanel
 
     // PROPERTIES
     // Axes
-    public get Left() : boolean {
-        if(this.axes[0] == -1) return true
-        return false
-    }
-    public get Right() : boolean {
-        if(this.axes[0] == 1) return true
-        return false
-    }
-    public get Up() : boolean {
-        if(this.axes[1] == -1) return true
-        return false
-    }
-    public get Down() : boolean {
-        if(this.axes[1] == 1) return true
-        return false
-    }
+    public get Left()   : boolean { return (this.axes[0] == -1) }
+    public get Right()  : boolean { return (this.axes[0] == 1)  }
+    public get Up()     : boolean { return (this.axes[1] == -1) }
+    public get Down()   : boolean { return (this.axes[1] == 1)  }
 
-    
     /**
      * Creates a joystick object for one player
      * @param numOfButtons The number of buttons needed by your game
      */
-    constructor(numOfButtons : number) {
+    constructor(numOfButtons: number) {
         this.numberOfBUttons = numOfButtons
-        // add all buttons to an array
-        this.buttons.push(false, false, false, false, false, false)
-        // add all axes (x:number, y:number) to an array
-        this.axes.push(this.x, this.y)
 
-        if(this.DEBUG) { this.debugPanel = new DebugPanel(this.axes, this.numberOfBUttons) }
-        
-        for(let i = 1; i <= this.numberOfBUttons ; i++) {
-            this.buttonEvents.push(new Event('button'+i))
-        }
-        
-        window.addEventListener("gamepadconnected", (e : Event) => this.onGamePadConnected(e as GamepadEvent));
+        if (this.DEBUG) { this.debugPanel = new DebugPanel(this.numberOfBUttons) }
+
+        window.addEventListener("gamepadconnected", (e: Event) => this.onGamePadConnected(e as GamepadEvent))
+        window.addEventListener("gamepaddisconnected", (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
     }
 
-    private onGamePadConnected(e:GamepadEvent) : void {
+    private onGamePadConnected(e: GamepadEvent): void {
         if (this.DEBUG) { console.log('Game pad connected') }
         this.gamepad = e.gamepad
         this.previousGamepad = this.gamepad
         this.isConnected = true
     }
+    private onGamePadDisconnected(e: GamepadEvent): void {
+        if (this.DEBUG) { console.log('Game pad connected') }
+        this.isConnected = false
+    }
 
-    public update() : void {
-        if(this.isConnected) {
+    public update(): void {
+        if (this.isConnected) {
             let gamepads = navigator.getGamepads()
-            
+
             if (!gamepads) {
                 return;
             }
 
-            let gamepad : Gamepad = gamepads[0]!
-            
-            for (let index = 0; index < this.buttons.length; index++) {
-                if (this.buttonPressed(gamepad.buttons[index]) &&
-                    !this.buttonPressed(this.previousGamepad.buttons[index])) 
-                {
-                    document.dispatchEvent(this.buttonEvents[index])
-                    this.buttons[index] = true
-                } else {
-                    this.buttons[index] = false
+            let gamepad: Gamepad | null = gamepads[0]
+
+            if (gamepad) {
+                for (let index = 0; index < this.numberOfBUttons; index++) {
+                    if (this.buttonPressed(gamepad.buttons[index]) &&
+                        !this.buttonPressed(this.previousGamepad.buttons[index])) {
+                        document.dispatchEvent(new Event('button' + (index + 1)))
+                    }
+                    if (this.buttonPressed(gamepad.buttons[this.BUT1]) &&
+                        this.buttonPressed(gamepad.buttons[this.BUT2]) &&
+                        (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||
+                            !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
+                        window.location.href = this.REDIRECT_URL
+                    }
                 }
-                if(this.buttonPressed(gamepad.buttons[this.BUT1]) &&
-                   this.buttonPressed(gamepad.buttons[this.BUT2]) &&
-                   (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||
-                    !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
-                       window.location.href = this.REDIRECT_URL
-                   }
-            }
-            
-            // gamepad has 4 axes, first is x, second is y
-            // an axe returns a float, only int is needed
-            this.x = Math.round(gamepad.axes[0])
-            this.y = Math.round(gamepad.axes[1])
-            
-            if (this.DEBUG) { 
-                // update the axes (x and y)
-                this.debugPanel.Axes[0] = this.x
-                this.debugPanel.Axes[1] = this.y
 
-                this.debugPanel.update()
-            }
+                // gamepad has 4 axes, first is x, second is y
+                // an axe returns a float, only int is needed
+                this.axes[0] = Math.round(gamepad.axes[0])
+                this.axes[1] = Math.round(gamepad.axes[1])
+                
+                if (this.DEBUG) {
+                    // update the axes (x and y)
+                    this.debugPanel.Axes[0] = this.axes[0]
+                    this.debugPanel.Axes[1] = this.axes[1]
 
-            this.previousGamepad = gamepad
+                    this.debugPanel.update()
+                }
+
+                this.previousGamepad = gamepad
+            }
         }
     }
 
@@ -121,11 +95,11 @@ class Joystick {
      * Helper function to filter some bad input
      * @param b 
      */
-    private buttonPressed(b:any) : any {
-        if (typeof(b) == "object") {
-          return b.pressed;
+    private buttonPressed(b: any): any {
+        if (typeof (b) == "object") {
+            return b.pressed;
         }
         return b == 1.0;
-      }
+    }
 }
 

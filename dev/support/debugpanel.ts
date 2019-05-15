@@ -64,8 +64,6 @@ root .button-div {
 //#endregion
 
 class DebugPanel extends HTMLElement{
-
-    // private buttons : boolean[] 
     private numberOfButtons : number
     private buttonDivs : HTMLElement[] = []
     
@@ -74,12 +72,11 @@ class DebugPanel extends HTMLElement{
     private up      : HTMLElement
     private down    : HTMLElement
 
-    public Axes : number[]
+    public Axes : number[] = []
 
     private rootElement : HTMLElement
 
-    
-    constructor(axes: number[], numOfButtons : number) {
+    constructor(numOfButtons : number) {
         super()
         console.log('Debug panel initialized')
         this.numberOfButtons = numOfButtons
@@ -88,7 +85,6 @@ class DebugPanel extends HTMLElement{
         template.appendChild(this.rootElement)
         
         // axes
-        this.Axes = axes
         this.createHTMLForAxes()
         
         // this.buttons = buttons
