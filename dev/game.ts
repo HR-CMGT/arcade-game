@@ -2,14 +2,14 @@ class Game {
     private joystick : Joystick
 
     constructor() {
-        this.joystick = new Joystick(6)
+        this.joystick = new Joystick(0, 6)
         
-        document.addEventListener("button1", () => this.handleButton1Click())
-        document.addEventListener("button2", () => this.jump())
-        document.addEventListener("button3", () => console.log('Button 3 fired'))
-        document.addEventListener("button4", () => console.log('Button 4 fired'))
-        document.addEventListener("button5", () => console.log('Button 5 fired'))
-        document.addEventListener("button6", () => console.log('Button 6 fired'))
+        document.addEventListener("button0", () => this.handleButton1Click())
+        document.addEventListener("button1", () => this.jump())
+        document.addEventListener("button2", () => console.log('Button 3 fired'))
+        document.addEventListener("button3", () => console.log('Button 4 fired'))
+        document.addEventListener("button4", () => console.log('Button 5 fired'))
+        document.addEventListener("button5", () => console.log('Button 6 fired'))
 
         this.gameLoop()
     }

@@ -8,15 +8,16 @@ class Joystick {
     private readonly REDIRECT_URL: string = "http://hr-cmgt.github.io/arcade-server"
 
     // FIELDS
-    private numberOfBUttons = 0
-    private axes: number[]  = []
+    private player          : number    = 0
+    private numberOfBUttons : number    = 0
+    private axes            : number[]  = []
 
-    private gamepad: Gamepad
-    private previousGamepad: Gamepad
+    private gamepad         : Gamepad
+    private previousGamepad : Gamepad
 
-    private isConnected: boolean = false
+    private isConnected     : boolean = false
 
-    private debugPanel: DebugPanel
+    private debugPanel      : DebugPanel
 
     // PROPERTIES
     // Axes
@@ -27,15 +28,17 @@ class Joystick {
 
     /**
      * Creates a joystick object for one player
+     * @param playerNumber The number of the first player starts at 0
      * @param numOfButtons The number of buttons needed by your game
      */
-    constructor(numOfButtons: number) {
+    constructor(playerNumber : number, numOfButtons: number) {
+        this.player = playerNumber
         this.numberOfBUttons = numOfButtons
 
         if (this.DEBUG) { this.debugPanel = new DebugPanel(this.numberOfBUttons) }
 
-        window.addEventListener("gamepadconnected", (e: Event) => this.onGamePadConnected(e as GamepadEvent))
-        window.addEventListener("gamepaddisconnected", (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
+        window.addEventListener("gamepadconnected",     (e: Event) => this.onGamePadConnected(e as GamepadEvent))
+        window.addEventListener("gamepaddisconnected",  (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
     }
 
     private onGamePadConnected(e: GamepadEvent): void {
@@ -61,15 +64,12 @@ class Joystick {
 
             if (gamepad) {
                 for (let index = 0; index < this.numberOfBUttons; index++) {
-                    if (this.buttonPressed(gamepad.buttons[index]) &&
-                        !this.buttonPressed(this.previousGamepad.buttons[index])) {
+                    if (this.buttonPressed(gamepad.buttons[index]) && !this.buttonPressed(this.previousGamepad.buttons[index])) {
                         document.dispatchEvent(new Event('button' + (index + 1)))
                     }
-                    if (this.buttonPressed(gamepad.buttons[this.BUT1]) &&
-                        this.buttonPressed(gamepad.buttons[this.BUT2]) &&
-                        (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||
-                            !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
-                        window.location.href = this.REDIRECT_URL
+                    if (this.buttonPressed(gamepad.buttons[this.BUT1]) && this.buttonPressed(gamepad.buttons[this.BUT2]) &&
+                        (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||  !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
+                            window.location.href = this.REDIRECT_URL
                     }
                 }
 
@@ -89,6 +89,19 @@ class Joystick {
                 this.previousGamepad = gamepad
             }
         }
+    }
+    private readGamepad(gamepad: Gamepad) : void {
+         
+        for (let i = 0; i < this.numberOfBUttons; i++) {
+            if (this.buttonPressed(gamepad.buttons[i]) && !this.buttonPressed(this.previousGamepad.buttons[i])) 
+            {
+                document.dispatchEvent(new Event('P'+this.player+'button' + (i)))
+                if(this.DEBUG) console.log('P'+this.player+'button' + (i+1))
+            }
+        }
+
+        this.axes = [gamepad.axes[0], gamepad.axes[1]]
+        this.previousGamepad = gamepad
     }
 
     /**
