@@ -4,8 +4,8 @@ class Joystick {
 
     // BUT1 and BUT2 are the indexes of the redirect function. 
     // When both are pressed, redirect to homepage
-    private readonly BUT1: number = 1
-    private readonly BUT2: number = 2
+    private readonly BUT1: number = 8
+    private readonly BUT2: number = 9
 
     // FIELDS
     private joystickNumber  : number    = 0

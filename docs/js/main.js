@@ -86,8 +86,8 @@ class Arcade {
 class Joystick {
     constructor(joystickNumber, numOfButtons, debug) {
         this.DEBUG = true;
-        this.BUT1 = 1;
-        this.BUT2 = 2;
+        this.BUT1 = 8;
+        this.BUT2 = 9;
         this.joystickNumber = 0;
         this.numberOfBUttons = 0;
         this.axes = [];
