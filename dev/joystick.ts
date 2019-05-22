@@ -1,21 +1,22 @@
 class Joystick {
 
-    private readonly DEBUG: boolean = true;
+    private DEBUG: boolean = true;
+
     // BUT1 and BUT2 are the indexes of the redirect function. 
     // When both are pressed, redirect to homepage
     private readonly BUT1: number = 1
     private readonly BUT2: number = 2
-    private readonly REDIRECT_URL: string = "http://hr-cmgt.github.io/arcade-server"
 
     // FIELDS
-    private player          : number    = 0
+    private joystickNumber  : number    = 0
     private numberOfBUttons : number    = 0
     private axes            : number[]  = []
 
     private gamepad         : Gamepad
     private previousGamepad : Gamepad
 
-    private isConnected     : boolean = false
+    // private isConnected     : boolean = false
+    public isConnected     : boolean = false
 
     private debugPanel      : DebugPanel
 
@@ -26,50 +27,44 @@ class Joystick {
     public get Up()     : boolean { return (this.axes[1] == -1) }
     public get Down()   : boolean { return (this.axes[1] == 1)  }
 
+    // Joystick identifier
+    public get JoystickNumber()     : number { return this.joystickNumber }
+
+    // Current gamepad
+    public get Gamepad()            : Gamepad { return this.gamepad }
+    public set Gamepad(gamepad:Gamepad) { this.gamepad = gamepad; }
+
+    // previous gamepad
+    public get PreviousGamepad()    : Gamepad { return this.previousGamepad }
+    public set PreviousGamepad(previousGamepad:Gamepad) { this.previousGamepad = previousGamepad; }
+
     /**
      * Creates a joystick object for one player
-     * @param playerNumber The number of the first player starts at 0
+     * @param joystickNumber The number of the first joystick starts at 0
      * @param numOfButtons The number of buttons needed by your game
      */
-    constructor(playerNumber : number, numOfButtons: number) {
-        this.player = playerNumber
+    constructor(joystickNumber : number, numOfButtons: number, debug: boolean) {
+        this.joystickNumber = joystickNumber
         this.numberOfBUttons = numOfButtons
+        this.DEBUG = debug
 
-        if (this.DEBUG) { this.debugPanel = new DebugPanel(this.numberOfBUttons) }
-
-        window.addEventListener("gamepadconnected",     (e: Event) => this.onGamePadConnected(e as GamepadEvent))
-        window.addEventListener("gamepaddisconnected",  (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
-    }
-
-    private onGamePadConnected(e: GamepadEvent): void {
-        if (this.DEBUG) { console.log('Game pad connected') }
-        this.gamepad = e.gamepad
-        this.previousGamepad = this.gamepad
-        this.isConnected = true
-    }
-    private onGamePadDisconnected(e: GamepadEvent): void {
-        if (this.DEBUG) { console.log('Game pad connected') }
-        this.isConnected = false
+        if (this.DEBUG) { this.debugPanel = new DebugPanel(this.joystickNumber, this.numberOfBUttons) }
     }
 
     public update(): void {
         if (this.isConnected) {
-            let gamepads = navigator.getGamepads()
-
-            if (!gamepads) {
-                return;
-            }
-
-            let gamepad: Gamepad | null = gamepads[0]
+            let gamepad = navigator.getGamepads()[this.gamepad.index];
 
             if (gamepad) {
                 for (let index = 0; index < this.numberOfBUttons; index++) {
                     if (this.buttonPressed(gamepad.buttons[index]) && !this.buttonPressed(this.previousGamepad.buttons[index])) {
-                        document.dispatchEvent(new Event('button' + (index + 1)))
+                        let eventName = 'joystick'+ this.JoystickNumber +'button' + (index + 1)
+                        if (this.DEBUG) { console.log("Dispatch event: "+eventName) }
+                        document.dispatchEvent(new Event(eventName))
                     }
                     if (this.buttonPressed(gamepad.buttons[this.BUT1]) && this.buttonPressed(gamepad.buttons[this.BUT2]) &&
                         (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||  !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
-                            window.location.href = this.REDIRECT_URL
+                            document.dispatchEvent(new Event('redirect'))
                     }
                 }
 
@@ -89,19 +84,6 @@ class Joystick {
                 this.previousGamepad = gamepad
             }
         }
-    }
-    private readGamepad(gamepad: Gamepad) : void {
-         
-        for (let i = 0; i < this.numberOfBUttons; i++) {
-            if (this.buttonPressed(gamepad.buttons[i]) && !this.buttonPressed(this.previousGamepad.buttons[i])) 
-            {
-                document.dispatchEvent(new Event('P'+this.player+'button' + (i)))
-                if(this.DEBUG) console.log('P'+this.player+'button' + (i+1))
-            }
-        }
-
-        this.axes = [gamepad.axes[0], gamepad.axes[1]]
-        this.previousGamepad = gamepad
     }
 
     /**

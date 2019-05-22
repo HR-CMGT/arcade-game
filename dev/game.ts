@@ -1,27 +1,23 @@
 class Game {
-    private joystick : Joystick
+    private arcade : Arcade
 
     constructor() {
-        this.joystick = new Joystick(0, 6)
-        
-        document.addEventListener("button0", () => this.handleButton1Click())
-        document.addEventListener("button1", () => this.jump())
-        document.addEventListener("button2", () => console.log('Button 3 fired'))
-        document.addEventListener("button3", () => console.log('Button 4 fired'))
-        document.addEventListener("button4", () => console.log('Button 5 fired'))
-        document.addEventListener("button5", () => console.log('Button 6 fired'))
+        // create arcade cabinet with 2 joysticks (with 6 buttons)
+        this.arcade = new Arcade()
 
         this.gameLoop()
     }
 
     private gameLoop() : void {
-        this.joystick.update()
+        for(let joystick of this.arcade.Joysticks){
+            joystick.update()
 
-        if(this.joystick.Left)  console.log('LEFT')
-        if(this.joystick.Right) console.log('RIGHT')
-        if(this.joystick.Up)    console.log('UP')
-        if(this.joystick.Down)  console.log('Down')
-        
+            if(joystick.Left)  console.log('LEFT')
+            if(joystick.Right) console.log('RIGHT')
+            if(joystick.Up)    console.log('UP')
+            if(joystick.Down)  console.log('Down')
+        }
+
         requestAnimationFrame(() => this.gameLoop())
     }
 

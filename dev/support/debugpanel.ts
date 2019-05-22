@@ -60,10 +60,22 @@ root .button-div {
 .axes-cell.active{
     background-color: red;
 }
+.identifier{
+    position:absolute;
+    top: 5px;
+    left: 5px;
+    width: auto;
+    font-weight: bold;
+    color: #fff;
+}
 </style>`
 //#endregion
 
 class DebugPanel extends HTMLElement{
+    private readonly panelHeight : number = 120
+    private readonly panelSpacing : number = 10
+
+    private joystickNumber  : number    = 0
     private numberOfButtons : number
     private buttonDivs : HTMLElement[] = []
     
@@ -76,13 +88,25 @@ class DebugPanel extends HTMLElement{
 
     private rootElement : HTMLElement
 
-    constructor(numOfButtons : number) {
+    constructor(joystickNumber : number, numOfButtons : number) {
         super()
         console.log('Debug panel initialized')
+
+        this.joystickNumber = joystickNumber
         this.numberOfButtons = numOfButtons
 
+        let spaceFromTop = this.panelSpacing + ( this.joystickNumber * (this.panelHeight + this.panelSpacing) )
+        this.style.top = spaceFromTop + "px"
+
         this.rootElement = document.createElement('root')
+        this.rootElement.style.height = this.panelHeight + "px"
         template.appendChild(this.rootElement)
+
+        // identifier
+        let identifier = document.createElement("div")
+        identifier.classList.add('identifier')
+        identifier.innerHTML = "#" + this.joystickNumber
+        this.rootElement.appendChild(identifier)
         
         // axes
         this.createHTMLForAxes()
@@ -103,20 +127,17 @@ class DebugPanel extends HTMLElement{
     }
 
     private createListenersForButtons() {
-        document.addEventListener("button1", (e:Event) => this.handleButtonClicks(e))
-        document.addEventListener("button2", (e:Event) => this.handleButtonClicks(e))
-        document.addEventListener("button3", (e:Event) => this.handleButtonClicks(e))
-        document.addEventListener("button4", (e:Event) => this.handleButtonClicks(e))
-        document.addEventListener("button5", (e:Event) => this.handleButtonClicks(e))
-        document.addEventListener("button6", (e:Event) => this.handleButtonClicks(e))
+        let eventPrefix = "joystick"+this.joystickNumber;
+        document.addEventListener(eventPrefix+"button1", (e:Event) => this.handleButtonClicks(e, 0))
+        document.addEventListener(eventPrefix+"button2", (e:Event) => this.handleButtonClicks(e, 1))
+        document.addEventListener(eventPrefix+"button3", (e:Event) => this.handleButtonClicks(e, 2))
+        document.addEventListener(eventPrefix+"button4", (e:Event) => this.handleButtonClicks(e, 3))
+        document.addEventListener(eventPrefix+"button5", (e:Event) => this.handleButtonClicks(e, 4))
+        document.addEventListener(eventPrefix+"button6", (e:Event) => this.handleButtonClicks(e, 5))
     }
 
-    private handleButtonClicks(event:Event) {
-        // event.type is something like 'button1'
-        let buttonIndex : number = parseInt(event.type.split('button')[1])
-        let arrayIndex = buttonIndex - 1
-        
-        this.buttonDivs[arrayIndex].style.filter =
+    private handleButtonClicks(event:Event, index: number) {
+        this.buttonDivs[index].style.filter =
                     'hue-rotate('+(Math.random() * 360)+'deg)' 
     }
 
@@ -196,4 +217,4 @@ class DebugPanel extends HTMLElement{
     }
 }
 
-window.customElements.define("debug-panel", DebugPanel);
+window.customElements.define("debug-panel", DebugPanel)
