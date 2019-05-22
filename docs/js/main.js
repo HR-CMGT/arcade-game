@@ -1,9 +1,30 @@
 "use strict";
+class Game {
+    constructor() {
+        this.arcade = new Arcade();
+        this.gameLoop();
+    }
+    gameLoop() {
+        for (let joystick of this.arcade.Joysticks) {
+            joystick.update();
+            if (joystick.Left)
+                console.log('LEFT');
+            if (joystick.Right)
+                console.log('RIGHT');
+            if (joystick.Up)
+                console.log('UP');
+            if (joystick.Down)
+                console.log('Down');
+        }
+        requestAnimationFrame(() => this.gameLoop());
+    }
+}
+window.addEventListener("load", () => new Game());
 class Arcade {
     constructor() {
         this.DEBUG = true;
         this.REDIRECT_URL = "http://hr-cmgt.github.io/arcade-server";
-        this.joysticks = new Array();
+        this.joysticks = [];
         document.addEventListener("redirect", () => this.onRedirect());
         window.addEventListener("gamepadconnected", (e) => this.onGamePadConnected(e));
         window.addEventListener("gamepaddisconnected", (e) => this.onGamePadDisconnected(e));
@@ -62,27 +83,6 @@ class Arcade {
         return null;
     }
 }
-class Game {
-    constructor() {
-        this.arcade = new Arcade();
-        this.gameLoop();
-    }
-    gameLoop() {
-        for (let joystick of this.arcade.Joysticks) {
-            joystick.update();
-            if (joystick.Left)
-                console.log('LEFT');
-            if (joystick.Right)
-                console.log('RIGHT');
-            if (joystick.Up)
-                console.log('UP');
-            if (joystick.Down)
-                console.log('Down');
-        }
-        requestAnimationFrame(() => this.gameLoop());
-    }
-}
-window.addEventListener("load", () => new Game());
 class Joystick {
     constructor(joystickNumber, numOfButtons, debug) {
         this.DEBUG = true;

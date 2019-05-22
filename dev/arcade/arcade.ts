@@ -4,13 +4,13 @@ class Arcade{
     private readonly REDIRECT_URL   : string = "http://hr-cmgt.github.io/arcade-server"
 
     // PROPERTIES
-    public get Joysticks()          : Array<Joystick> { return this.joysticks }
+    public get Joysticks()          : Joystick[] { return this.joysticks }
 
     /**
      * Creates an arcade 'cabinet'
      */
     constructor() {
-        this.joysticks = new Array<Joystick>()
+        this.joysticks = []
     
         document.addEventListener("redirect", () => this.onRedirect())
         window.addEventListener("gamepadconnected",     (e: Event) => this.onGamePadConnected(e as GamepadEvent))
