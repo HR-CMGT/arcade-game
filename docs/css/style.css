@@ -10,11 +10,3 @@ game * {
     box-sizing:         border-box;
     background-repeat:  no-repeat;
 }
-
-/* ---------- START DEBUG PANEL ---------- */
-debug-panel {
-    position:           absolute;
-    top:                10px;
-    right:              10px;
-}
-/* ---------- END DEBUG PANEL ------------ */

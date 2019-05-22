@@ -20,14 +20,6 @@ class Game {
 
         requestAnimationFrame(() => this.gameLoop())
     }
-
-    private handleButton1Click() {
-        console.log('Button 1 fired')
-    }
-
-    private jump() {
-        console.log('Jump!')
-    }
 }
 
 window.addEventListener("load", () => new Game())

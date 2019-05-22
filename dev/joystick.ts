@@ -56,36 +56,39 @@ class Joystick {
             let gamepad = navigator.getGamepads()[this.gamepad.index];
 
             if (gamepad) {
-                for (let index = 0; index < this.numberOfBUttons; index++) {
-                    if (this.buttonPressed(gamepad.buttons[index]) && !this.buttonPressed(this.previousGamepad.buttons[index])) {
-                        let eventName = 'joystick'+ this.JoystickNumber +'button' + (index + 1)
-                        if (this.DEBUG) { console.log("Dispatch event: "+eventName) }
-                        document.dispatchEvent(new Event(eventName))
-                    }
-                    if (this.buttonPressed(gamepad.buttons[this.BUT1]) && this.buttonPressed(gamepad.buttons[this.BUT2]) &&
-                        (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||  !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
-                            document.dispatchEvent(new Event('redirect'))
-                    }
-                }
-
-                // gamepad has 4 axes, first is x, second is y
-                // an axe returns a float, only int is needed
-                this.axes[0] = Math.round(gamepad.axes[0])
-                this.axes[1] = Math.round(gamepad.axes[1])
-                
-                if (this.DEBUG) {
-                    // update the axes (x and y)
-                    this.debugPanel.Axes[0] = this.axes[0]
-                    this.debugPanel.Axes[1] = this.axes[1]
-
-                    this.debugPanel.update()
-                }
-
-                this.previousGamepad = gamepad
+                this.readGamepad(gamepad)
             }
         }
     }
 
+    private readGamepad(gamepad: Gamepad) : void {
+        for (let index = 0; index < this.numberOfBUttons; index++) {
+            if (this.buttonPressed(gamepad.buttons[index]) && !this.buttonPressed(this.previousGamepad.buttons[index])) {
+                let eventName = 'joystick'+ this.JoystickNumber +'button' + (index)
+                if (this.DEBUG) { console.log("Dispatch event: "+eventName) }
+                document.dispatchEvent(new Event(eventName))
+            }
+            if (this.buttonPressed(gamepad.buttons[this.BUT1]) && this.buttonPressed(gamepad.buttons[this.BUT2]) &&
+                (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) ||  !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
+                    document.dispatchEvent(new Event('redirect'))
+            }
+        }
+
+        // gamepad has 4 axes, first is x, second is y
+        // an axe returns a float, only int is needed
+        this.axes[0] = Math.round(gamepad.axes[0])
+        this.axes[1] = Math.round(gamepad.axes[1])
+        
+        if (this.DEBUG) {
+            // update the axes (x and y)
+            this.debugPanel.Axes[0] = this.axes[0]
+            this.debugPanel.Axes[1] = this.axes[1]
+
+            this.debugPanel.update()
+        }
+
+        this.previousGamepad = gamepad
+    }
     /**
      * Helper function to filter some bad input
      * @param b 
@@ -95,6 +98,10 @@ class Joystick {
             return b.pressed;
         }
         return b == 1.0;
+    }
+
+    public destroy() {
+        if(this.DEBUG) this.debugPanel.remove()
     }
 }
 

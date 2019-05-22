@@ -1,6 +1,6 @@
 class Arcade{
     private readonly DEBUG          : boolean = true;
-    private joysticks               : Array<Joystick>
+    private joysticks               : Joystick[]
     private readonly REDIRECT_URL   : string = "http://hr-cmgt.github.io/arcade-server"
 
     // PROPERTIES
@@ -75,11 +75,12 @@ class Arcade{
      */
     public removeJoystick(joystickNumber : number): void {
         let joystickCheck = this.getJoystickByNumber(joystickNumber)
-        if(joystickCheck != null){
+        if(joystickCheck == null){
             return
         }
-
+        
         var index = this.joysticks.indexOf(joystickCheck);
+        this.joysticks[index].destroy()
         if (index > -1) {
             this.joysticks.splice(index, 1);
         }

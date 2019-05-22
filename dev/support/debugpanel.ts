@@ -2,11 +2,11 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
-// :host {
-//     position:           absolute;
-//     top:                10px;
-//     right:              10px;
-// }
+:host {
+    position:           absolute;
+    top:                10px;
+    right:              10px;
+}
 root {
     top:                10px;
     right:              10px;
@@ -128,12 +128,12 @@ class DebugPanel extends HTMLElement{
 
     private createListenersForButtons() {
         let eventPrefix = "joystick"+this.joystickNumber;
-        document.addEventListener(eventPrefix+"button1", (e:Event) => this.handleButtonClicks(e, 0))
-        document.addEventListener(eventPrefix+"button2", (e:Event) => this.handleButtonClicks(e, 1))
-        document.addEventListener(eventPrefix+"button3", (e:Event) => this.handleButtonClicks(e, 2))
-        document.addEventListener(eventPrefix+"button4", (e:Event) => this.handleButtonClicks(e, 3))
-        document.addEventListener(eventPrefix+"button5", (e:Event) => this.handleButtonClicks(e, 4))
-        document.addEventListener(eventPrefix+"button6", (e:Event) => this.handleButtonClicks(e, 5))
+        document.addEventListener(eventPrefix+"button0", (e:Event) => this.handleButtonClicks(e, 0))
+        document.addEventListener(eventPrefix+"button1", (e:Event) => this.handleButtonClicks(e, 1))
+        document.addEventListener(eventPrefix+"button2", (e:Event) => this.handleButtonClicks(e, 2))
+        document.addEventListener(eventPrefix+"button3", (e:Event) => this.handleButtonClicks(e, 3))
+        document.addEventListener(eventPrefix+"button4", (e:Event) => this.handleButtonClicks(e, 4))
+        document.addEventListener(eventPrefix+"button5", (e:Event) => this.handleButtonClicks(e, 5))
     }
 
     private handleButtonClicks(event:Event, index: number) {
