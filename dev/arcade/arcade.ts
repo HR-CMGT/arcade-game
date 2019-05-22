@@ -22,7 +22,7 @@ class Arcade{
      */
     private onRedirect(): void {
         if (this.DEBUG) { console.log('redirect!!') }
-        // window.location.href = this.REDIRECT_URL
+        window.location.href = this.REDIRECT_URL
     }
 
     /**

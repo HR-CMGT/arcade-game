@@ -34,6 +34,7 @@ class Arcade {
         if (this.DEBUG) {
             console.log('redirect!!');
         }
+        window.location.href = this.REDIRECT_URL;
     }
     onGamePadConnected(e) {
         if (this.DEBUG) {
