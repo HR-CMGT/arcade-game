@@ -39,7 +39,6 @@ Use CSS Scaling to scale the game up.
 }
 ```
 ⚠️ Experimental! After upgrading Phaser to 3.17, you can use Phaser's scaling feature. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
-```
 
 ## Joystick
 
