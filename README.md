@@ -66,11 +66,16 @@ class Game {
     private gameLoop() : void {
         for(let joystick of this.arcade.Joysticks){
             joystick.update()
-
+            
+            // just log the values
             if(joystick.Left)  console.log('LEFT')
             if(joystick.Right) console.log('RIGHT')
             if(joystick.Up)    console.log('UP')
             if(joystick.Down)  console.log('Down')
+            
+            // use the values to set X and Y velocity of a player
+            playerOne.setVelocityX(this.joystick.XAxis * 400)
+            playerOne.setVelocityY(this.joystick.YAxis * 400)
         }
 
         requestAnimationFrame(() => this.gameLoop())
