@@ -42,17 +42,25 @@ Use Phasers' scaling options to adjust the game size to the monitor size. [Read 
 
 ## Joystick
 
-- Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check this game example to see how to listen to the buttons and joystick:
+Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
+
+- The position of the stick can be read in the update() function.
+- Button presses can be detected with an eventListener. 
 
 ```
 class Game {
     private arcade : Arcade
 
     constructor() {
-        // create arcade cabinet with 2 joysticks (with 6 buttons)
         this.arcade = new Arcade()
+        
+        document.addEventListener("joystick0button0", () => this.playerOneFire())
 
         this.gameLoop()
+    }
+    
+    private playerOneFire(){
+        console.log("player one fired!")
     }
 
     private gameLoop() : void {
