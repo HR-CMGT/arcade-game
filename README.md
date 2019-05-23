@@ -4,10 +4,19 @@
 
 Instructions for adding your game to the HR CMGT ARCADE CABINET
 
+- Serving your game
 - Game Size
 - Joystick controls
 - Phaser Gamepad
 - Redirecting to the game server
+
+## Serving your game
+
+Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable github pages to publish the docs folder. 
+
+![screenshot](./cart.png)
+
+If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
 
 ## Game Size
 
@@ -101,7 +110,7 @@ class Ship {
 }
 ```
 
-### Redirecting to the game server
+## Redirecting to the game server
 
 Your game needs to redirect to the arcade game server on button press 8 and 9. You can find example code here in the joystick class, or you can build your own redirect:
 ```
