@@ -74,8 +74,8 @@ class Game {
             if(joystick.Down)  console.log('Down')
             
             // use the values to set X and Y velocity of a player
-            playerOne.setVelocityX(this.joystick.XAxis * 400)
-            playerOne.setVelocityY(this.joystick.YAxis * 400)
+            playerOne.setVelocityX(joystick.XAxis * 400)
+            playerOne.setVelocityY(joystick.YAxis * 400)
         }
 
         requestAnimationFrame(() => this.gameLoop())
