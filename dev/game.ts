@@ -5,7 +5,13 @@ class Game {
         // create arcade cabinet with 2 joysticks (with 6 buttons)
         this.arcade = new Arcade()
 
+        document.addEventListener("joystick0button0", () => this.playerOneFire())
+
         this.gameLoop()
+    }
+    
+    private playerOneFire(){
+        console.log("player one fired!")
     }
 
     private gameLoop() : void {
