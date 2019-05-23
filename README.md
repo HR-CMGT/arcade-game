@@ -1,18 +1,19 @@
 # Arcade Game
 
-![screenshot](./docs/images/screenshot.png)
+![screenshot](./screenshot.png)
 
 Instructions for adding your game to the HR CMGT ARCADE CABINET
 
 - Game Size
 - Joystick controls
 - Phaser Gamepad
+- Redirecting to the game server
 
 ## Game Size
 
 The game window is 1440 x 900. If your game is smaller you have several options to display the game:
 
-- Use CSS to center the game in the window on a black background.
+Use CSS to center the game in the window on a black background.
 ```
 #game {
     width:800px;
@@ -20,7 +21,7 @@ The game window is 1440 x 900. If your game is smaller you have several options 
     margin: 0 auto;
 }
 ```
-- Use CSS Scaling to scale the game up. 
+Use CSS Scaling to scale the game up. 
 ```
 #game {
    width:800px;
@@ -28,7 +29,7 @@ The game window is 1440 x 900. If your game is smaller you have several options 
    transform:scale(1.4);
 }
 ```
-- Use Phasers' scaling options to adjust the game size to the monitor size. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
+Use Phasers' scaling options to adjust the game size to the monitor size. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
 
 ## Joystick
 
@@ -74,7 +75,7 @@ import { JoyStick } from "./joystick"
 
 ## Phaser GamePad API
 
-- In Phaser, it's probably easier to use [Phaser's GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
+In Phaser, it's probably easier to use [Phaser's GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
 
 CONFIG
 ```
@@ -102,7 +103,7 @@ class Ship {
 
 ### Redirecting to the game server
 
-Make sure to add code that redirects *gamepad button 8 and 9* back to the arcade server!
+Your game needs to redirect to the arcade game server on button press 8 and 9. You can find example code here in the joystick class, or you can build your own redirect:
 ```
 window.location.href = "http://hr-cmgt.github.io/arcade-server"
 ```
