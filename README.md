@@ -121,6 +121,10 @@ class Ship {
     update() {
        console.log(gamepad.leftStick.x)       // x axis of joystick
        console.log(gamepad.A)                 // button A
+       
+       
+       this.setVelocityX(gamepad.leftStick.x * 400)        // set velocity with joystick
+       this.setVelocityY(gamepad.leftStick.y * 400)
     }
 }
 ```
