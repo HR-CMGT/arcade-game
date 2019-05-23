@@ -22,23 +22,27 @@ If you want, you can photoshop your own cartridge image for display in the serve
 
 The game window is 1440 x 900. If your game is smaller you have several options to display the game:
 
-Use CSS to center the game in the window on a black background.
+Use CSS to center a 800 x 600 game in the window on a black background.
 ```
 #game {
     width:800px;
     height:600px;
-    margin: 0 auto;
+    margin: 150px 320px;
 }
 ```
-Use CSS Scaling to scale the game up. 
+Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.25 (1000/800)
 ```
 #game {
    width:800px;
    height:600px;
-   transform:scale(1.4);
+   transform:scale(1.25);
 }
 ```
-⚠️ Experimental! After upgrading Phaser to 3.17, you can use Phaser's scaling feature. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
+## Phaser scaling
+
+A Phaser game also has a live `resize()` event, see the [example here on CodePen](https://codepen.io/yandeu/pen/oVBybd)
+
+⚠️ Experimental! [Phaser 3.17 has new scaling options](https://phaser.io/phaser3/devlog/136)
 
 ## Joystick
 
