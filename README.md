@@ -4,6 +4,10 @@
 
 Instructions for adding your game to the HR CMGT ARCADE CABINET
 
+- Game Size
+- Joystick controls
+- Phaser Gamepad
+
 ## Game Size
 
 The game window is 1440 x 900. If your game is smaller you have several options to display the game:
@@ -57,7 +61,7 @@ class Game {
 ```
 You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
-### Using this joystick class in Phaser
+#### Using this joystick class in Phaser
 
 If you use this class in phaser, you have to add `export` and `import` keywords to the classes.
 
@@ -68,7 +72,7 @@ export class JoyStick {
 import { JoyStick } from "./joystick"
 ```
 
-### Using Phasers GamePad API
+## Phaser GamePad API
 
 - In Phaser, it's probably easier to use [Phaser's GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
 
@@ -96,7 +100,9 @@ class Ship {
 }
 ```
 
-*NOTE* make sure to add code that redirects gamepad button 8 and 9 back to the arcade server!
+### Redirecting to the game server
+
+Make sure to add code that redirects *gamepad button 8 and 9* back to the arcade server!
 ```
 window.location.href = "http://hr-cmgt.github.io/arcade-server"
 ```
