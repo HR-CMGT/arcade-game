@@ -38,7 +38,8 @@ Use CSS Scaling to scale the game up.
    transform:scale(1.4);
 }
 ```
-Use Phasers' scaling options to adjust the game size to the monitor size. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
+⚠️ Experimental! After upgrading Phaser to 3.17, you can use Phaser's scaling feature. [Read the Phaser blog about all Scaling options](https://phaser.io/phaser3/devlog/136)
+```
 
 ## Joystick
 
