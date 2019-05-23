@@ -77,6 +77,8 @@ class Game {
     }
 }
 ```
+To see how to control a spaceship with the joystick, you can check the [Ruimtegruis Ship Example](https://github.com/KokoDoko/ruimtegruis/blob/master/src/objects/ship.ts)
+
 You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
 #### Using this joystick class in Phaser
