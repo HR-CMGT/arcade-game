@@ -1,16 +1,19 @@
 class Game {
     private arcade : Arcade
+    private fireListener: EventListener
 
     constructor() {
         // create arcade cabinet with 2 joysticks (with 6 buttons)
         this.arcade = new Arcade()
 
-        document.addEventListener("joystick0button0", () => this.playerOneFire())
+        // joystick fire button
+        this.fireListener = () => this.handleFireButton()
+        document.addEventListener("joystick0button0", this.fireListener)
 
         this.gameLoop()
     }
     
-    private playerOneFire(){
+    private handleFireButton(){
         console.log("player one fired!")
     }
 
@@ -25,6 +28,10 @@ class Game {
         }
 
         requestAnimationFrame(() => this.gameLoop())
+    }
+    
+    private gameOver(){
+        document.removeEventListener("joystick0button0", this.fireListener)
     }
 }
 
