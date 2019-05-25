@@ -13,7 +13,7 @@ root {
     width:              289px; 
     height:             120px;
     display:            block;
-    background-color: brown;
+    background-color:   #75a8f77a;
 }
 
 root * {
@@ -75,7 +75,7 @@ class DebugPanel extends HTMLElement{
     private readonly panelHeight : number = 120
     private readonly panelSpacing : number = 10
 
-    private joystickNumber  : number    = 0
+    private joystick  : Joystick
     private numberOfButtons : number
     private buttonDivs : HTMLElement[] = []
     
@@ -88,14 +88,13 @@ class DebugPanel extends HTMLElement{
 
     private rootElement : HTMLElement
 
-    constructor(joystickNumber : number, numOfButtons : number) {
+    constructor(joystick : Joystick, numOfButtons : number) {
         super()
-        console.log('Debug panel initialized')
-
-        this.joystickNumber = joystickNumber
+        
+        this.joystick = joystick
         this.numberOfButtons = numOfButtons
 
-        let spaceFromTop = this.panelSpacing + ( this.joystickNumber * (this.panelHeight + this.panelSpacing) )
+        let spaceFromTop = this.panelSpacing + ( this.joystick.JoystickNumber * (this.panelHeight + this.panelSpacing) )
         this.style.top = spaceFromTop + "px"
 
         this.rootElement = document.createElement('root')
@@ -105,7 +104,7 @@ class DebugPanel extends HTMLElement{
         // identifier
         let identifier = document.createElement("div")
         identifier.classList.add('identifier')
-        identifier.innerHTML = "#" + this.joystickNumber
+        identifier.innerHTML = "#" + this.joystick.JoystickNumber
         this.rootElement.appendChild(identifier)
         
         // axes
@@ -127,13 +126,10 @@ class DebugPanel extends HTMLElement{
     }
 
     private createListenersForButtons() {
-        let eventPrefix = "joystick"+this.joystickNumber;
-        document.addEventListener(eventPrefix+"button0", (e:Event) => this.handleButtonClicks(e, 0))
-        document.addEventListener(eventPrefix+"button1", (e:Event) => this.handleButtonClicks(e, 1))
-        document.addEventListener(eventPrefix+"button2", (e:Event) => this.handleButtonClicks(e, 2))
-        document.addEventListener(eventPrefix+"button3", (e:Event) => this.handleButtonClicks(e, 3))
-        document.addEventListener(eventPrefix+"button4", (e:Event) => this.handleButtonClicks(e, 4))
-        document.addEventListener(eventPrefix+"button5", (e:Event) => this.handleButtonClicks(e, 5))
+        for (let i = 0; i < this.numberOfButtons; i++) {
+            document.addEventListener(this.joystick.ButtonEvents[i], 
+                (e:Event) => this.handleButtonClicks(e, i))              
+        }
     }
 
     private handleButtonClicks(event:Event, index: number) {

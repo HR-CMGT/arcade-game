@@ -2,14 +2,16 @@ class Arcade{
     private readonly DEBUG          : boolean = true;
     private joysticks               : Joystick[]
     private readonly REDIRECT_URL   : string = "http://hr-cmgt.github.io/arcade-server"
-
+    private multiplayer             : boolean = false
     // PROPERTIES
     public get Joysticks()          : Joystick[] { return this.joysticks }
 
     /**
-     * Creates an arcade 'cabinet'
+     * Creates an arcade 'cabinet' 
+     * @param mp 'true' for 2 joystick multiplayer Arcade (default single player)
      */
-    constructor() {
+    constructor(mp:boolean = false) {
+        this.multiplayer = mp
         this.joysticks = []
     
         document.addEventListener("redirect", () => this.onRedirect())
@@ -34,13 +36,14 @@ class Arcade{
             console.log('Game pad connected')
             console.log("Joystick number: "+e.gamepad.index)
         }
-
-        let joystick = this.createAndAddJoystick(e.gamepad.index, 6)
-        joystick.isConnected = true
-        joystick.PreviousGamepad = joystick.Gamepad
-        joystick.Gamepad = e.gamepad
-        if(joystick.PreviousGamepad == null){
-            joystick.PreviousGamepad = e.gamepad
+        if((!this.multiplayer && this.joysticks.length == 0) || this.multiplayer) {
+            let joystick = this.createAndAddJoystick(e.gamepad.index, 6)
+            
+            joystick.PreviousGamepad = joystick.Gamepad
+            joystick.Gamepad = e.gamepad
+            if(joystick.PreviousGamepad == null){
+                joystick.PreviousGamepad = e.gamepad
+            }
         }
     }
 
@@ -66,6 +69,7 @@ class Arcade{
 
         let joystickNew = new Joystick(joystickNumber, numOfButtons, this.DEBUG)
         this.joysticks[joystickNumber] = joystickNew
+        if (joystickNew) document.dispatchEvent(new CustomEvent("joystickcreated", { detail: joystickNumber }))
         return joystickNew
     }
 

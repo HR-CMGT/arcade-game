@@ -1,10 +1,61 @@
 "use strict";
+class Circle extends HTMLElement {
+    constructor(joystick) {
+        super();
+        this.speed = 3;
+        this.x = 0;
+        this.y = 0;
+        this.joystick = joystick;
+        this.style.backgroundColor = "red";
+        this.style.width = "100px";
+        this.style.height = "100px";
+        this.style.borderRadius = "50px";
+        let game = document.getElementsByTagName("game")[0];
+        game.appendChild(this);
+        document.addEventListener(joystick.ButtonEvents[0], () => this.changeColor());
+    }
+    changeColor() {
+        let color = Math.random() * 360;
+        this.style.filter = "hue-rotate(" + color + "deg)";
+    }
+    update() {
+        if (this.joystick.Left)
+            this.x -= this.speed;
+        if (this.joystick.Right)
+            this.x += this.speed;
+        if (this.joystick.Up)
+            this.y -= this.speed;
+        if (this.joystick.Down)
+            this.y += this.speed;
+        this.draw();
+    }
+    draw() {
+        this.style.transform = `translate(${this.x}px, ${this.y}px)`;
+    }
+}
+window.customElements.define("circle-component", Circle);
 class Game {
     constructor() {
+        this.circles = [];
         this.arcade = new Arcade();
+        document.addEventListener("joystickcreated", (e) => this.initJoystick(e));
         this.gameLoop();
     }
+    initJoystick(e) {
+        let joystick = this.arcade.Joysticks[e.detail];
+        this.circles.push(new Circle(joystick));
+        for (const buttonEvent of joystick.ButtonEvents) {
+            document.addEventListener(buttonEvent, () => console.log(buttonEvent));
+        }
+        document.addEventListener(joystick.ButtonEvents[0], () => this.handleJump());
+    }
+    handleJump() {
+        console.log("Jump");
+    }
     gameLoop() {
+        for (const circle of this.circles) {
+            circle.update();
+        }
         for (let joystick of this.arcade.Joysticks) {
             joystick.update();
             if (joystick.Left)
@@ -21,9 +72,11 @@ class Game {
 }
 window.addEventListener("load", () => new Game());
 class Arcade {
-    constructor() {
+    constructor(mp = false) {
         this.DEBUG = true;
         this.REDIRECT_URL = "http://hr-cmgt.github.io/arcade-server";
+        this.multiplayer = false;
+        this.multiplayer = mp;
         this.joysticks = [];
         document.addEventListener("redirect", () => this.onRedirect());
         window.addEventListener("gamepadconnected", (e) => this.onGamePadConnected(e));
@@ -41,12 +94,13 @@ class Arcade {
             console.log('Game pad connected');
             console.log("Joystick number: " + e.gamepad.index);
         }
-        let joystick = this.createAndAddJoystick(e.gamepad.index, 6);
-        joystick.isConnected = true;
-        joystick.PreviousGamepad = joystick.Gamepad;
-        joystick.Gamepad = e.gamepad;
-        if (joystick.PreviousGamepad == null) {
-            joystick.PreviousGamepad = e.gamepad;
+        if ((!this.multiplayer && this.joysticks.length == 0) || this.multiplayer) {
+            let joystick = this.createAndAddJoystick(e.gamepad.index, 6);
+            joystick.PreviousGamepad = joystick.Gamepad;
+            joystick.Gamepad = e.gamepad;
+            if (joystick.PreviousGamepad == null) {
+                joystick.PreviousGamepad = e.gamepad;
+            }
         }
     }
     onGamePadDisconnected(e) {
@@ -62,6 +116,8 @@ class Arcade {
         }
         let joystickNew = new Joystick(joystickNumber, numOfButtons, this.DEBUG);
         this.joysticks[joystickNumber] = joystickNew;
+        if (joystickNew)
+            document.dispatchEvent(new CustomEvent("joystickcreated", { detail: joystickNumber }));
         return joystickNew;
     }
     removeJoystick(joystickNumber) {
@@ -91,13 +147,16 @@ class Joystick {
         this.BUT2 = 9;
         this.joystickNumber = 0;
         this.numberOfBUttons = 0;
+        this.buttonEvents = [];
         this.axes = [];
-        this.isConnected = false;
         this.joystickNumber = joystickNumber;
         this.numberOfBUttons = numOfButtons;
         this.DEBUG = debug;
+        for (let i = 0; i < this.numberOfBUttons; i++) {
+            this.buttonEvents.push('joystick' + this.JoystickNumber + 'button' + (i));
+        }
         if (this.DEBUG) {
-            this.debugPanel = new DebugPanel(this.joystickNumber, this.numberOfBUttons);
+            this.debugPanel = new DebugPanel(this, this.numberOfBUttons);
         }
     }
     get Left() { return (this.axes[0] == -1); }
@@ -105,28 +164,24 @@ class Joystick {
     get Up() { return (this.axes[1] == -1); }
     get Down() { return (this.axes[1] == 1); }
     get JoystickNumber() { return this.joystickNumber; }
+    get ButtonEvents() { return this.buttonEvents; }
     get Gamepad() { return this.gamepad; }
     set Gamepad(gamepad) { this.gamepad = gamepad; }
     get PreviousGamepad() { return this.previousGamepad; }
     set PreviousGamepad(previousGamepad) { this.previousGamepad = previousGamepad; }
     update() {
-        if (this.isConnected) {
-            let gamepad = navigator.getGamepads()[this.gamepad.index];
-            if (gamepad) {
-                this.readGamepad(gamepad);
-            }
+        let gamepad = navigator.getGamepads()[this.gamepad.index];
+        if (gamepad) {
+            this.readGamepad(gamepad);
         }
     }
     readGamepad(gamepad) {
         for (let index = 0; index < this.numberOfBUttons; index++) {
             if (this.buttonPressed(gamepad.buttons[index]) && !this.buttonPressed(this.previousGamepad.buttons[index])) {
-                let eventName = 'joystick' + this.JoystickNumber + 'button' + (index);
-                if (this.DEBUG) {
-                    console.log("Dispatch event: " + eventName);
-                }
-                document.dispatchEvent(new Event(eventName));
+                document.dispatchEvent(new Event(this.buttonEvents[index]));
             }
-            if (this.buttonPressed(gamepad.buttons[this.BUT1]) && this.buttonPressed(gamepad.buttons[this.BUT2]) &&
+            if (this.buttonPressed(gamepad.buttons[this.BUT1]) &&
+                this.buttonPressed(gamepad.buttons[this.BUT2]) &&
                 (!this.buttonPressed(this.previousGamepad.buttons[this.BUT1]) || !this.buttonPressed(this.previousGamepad.buttons[this.BUT2]))) {
                 document.dispatchEvent(new Event('redirect'));
             }
@@ -165,7 +220,7 @@ root {
     width:              289px; 
     height:             120px;
     display:            block;
-    background-color: brown;
+    background-color:   #75a8f77a;
 }
 
 root * {
@@ -222,24 +277,22 @@ root .button-div {
 }
 </style>`;
 class DebugPanel extends HTMLElement {
-    constructor(joystickNumber, numOfButtons) {
+    constructor(joystick, numOfButtons) {
         super();
         this.panelHeight = 120;
         this.panelSpacing = 10;
-        this.joystickNumber = 0;
         this.buttonDivs = [];
         this.Axes = [];
-        console.log('Debug panel initialized');
-        this.joystickNumber = joystickNumber;
+        this.joystick = joystick;
         this.numberOfButtons = numOfButtons;
-        let spaceFromTop = this.panelSpacing + (this.joystickNumber * (this.panelHeight + this.panelSpacing));
+        let spaceFromTop = this.panelSpacing + (this.joystick.JoystickNumber * (this.panelHeight + this.panelSpacing));
         this.style.top = spaceFromTop + "px";
         this.rootElement = document.createElement('root');
         this.rootElement.style.height = this.panelHeight + "px";
         template.appendChild(this.rootElement);
         let identifier = document.createElement("div");
         identifier.classList.add('identifier');
-        identifier.innerHTML = "#" + this.joystickNumber;
+        identifier.innerHTML = "#" + this.joystick.JoystickNumber;
         this.rootElement.appendChild(identifier);
         this.createHTMLForAxes();
         this.createHTMLForButtons();
@@ -253,13 +306,9 @@ class DebugPanel extends HTMLElement {
         document.body.appendChild(this);
     }
     createListenersForButtons() {
-        let eventPrefix = "joystick" + this.joystickNumber;
-        document.addEventListener(eventPrefix + "button0", (e) => this.handleButtonClicks(e, 0));
-        document.addEventListener(eventPrefix + "button1", (e) => this.handleButtonClicks(e, 1));
-        document.addEventListener(eventPrefix + "button2", (e) => this.handleButtonClicks(e, 2));
-        document.addEventListener(eventPrefix + "button3", (e) => this.handleButtonClicks(e, 3));
-        document.addEventListener(eventPrefix + "button4", (e) => this.handleButtonClicks(e, 4));
-        document.addEventListener(eventPrefix + "button5", (e) => this.handleButtonClicks(e, 5));
+        for (let i = 0; i < this.numberOfButtons; i++) {
+            document.addEventListener(this.joystick.ButtonEvents[i], (e) => this.handleButtonClicks(e, i));
+        }
     }
     handleButtonClicks(event, index) {
         this.buttonDivs[index].style.filter =
