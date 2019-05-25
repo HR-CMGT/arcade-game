@@ -36,7 +36,7 @@ class Joystick {
 
     // Current gamepad
     public get Gamepad()        : Gamepad { return this.gamepad }
-    public set Gamepad(gamepad:Gamepad)   { this.gamepad = gamepad; }
+    public set Gamepad(gamepad  : Gamepad){ this.gamepad = gamepad; }
 
     // previous gamepad
     public get PreviousGamepad(): Gamepad { return this.previousGamepad }
@@ -44,8 +44,9 @@ class Joystick {
 
     /**
      * Creates a joystick object for one player
-     * @param joystickNumber The number of the first joystick starts at 0
+     * @param joystickNumber The number of the first joystick (starts at 0)
      * @param numOfButtons The number of buttons needed by your game
+     * @param debug true for in browser gamepad info
      */
     constructor(joystickNumber : number, numOfButtons: number, debug: boolean) {
         this.joystickNumber     = joystickNumber

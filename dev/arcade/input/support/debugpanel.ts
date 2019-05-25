@@ -55,36 +55,36 @@ root .button-div {
 
 .axes-cell.center{
     border:             solid 1px black;
-    background-color: blue;
+    background-color:   blue;
 }
 .axes-cell.active{
-    background-color: red;
+    background-color:   red;
 }
 .identifier{
-    position:absolute;
-    top: 5px;
-    left: 5px;
-    width: auto;
-    font-weight: bold;
-    color: #fff;
+    position:           absolute;
+    top:                5px;
+    left:               5px;
+    width:              auto;
+    font-weight:        bold;
+    color:              #fff;
 }
 </style>`
 //#endregion
 
 class DebugPanel extends HTMLElement{
-    private readonly panelHeight : number = 120
-    private readonly panelSpacing : number = 10
+    private readonly panelHeight    : number = 120
+    private readonly panelSpacing   : number = 10
 
-    private joystick  : Joystick
+    private joystick        : Joystick
     private numberOfButtons : number
-    private buttonDivs : HTMLElement[] = []
+    private buttonDivs      : HTMLElement[] = []
     
-    private left    : HTMLElement
-    private right   : HTMLElement
-    private up      : HTMLElement
-    private down    : HTMLElement
+    private left            : HTMLElement
+    private right           : HTMLElement
+    private up              : HTMLElement
+    private down            : HTMLElement
 
-    public Axes : number[] = []
+    public Axes             : number[]      = []
 
     private rootElement : HTMLElement
 

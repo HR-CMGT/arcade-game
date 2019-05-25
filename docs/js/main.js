@@ -264,18 +264,18 @@ root .button-div {
 
 .axes-cell.center{
     border:             solid 1px black;
-    background-color: blue;
+    background-color:   blue;
 }
 .axes-cell.active{
-    background-color: red;
+    background-color:   red;
 }
 .identifier{
-    position:absolute;
-    top: 5px;
-    left: 5px;
-    width: auto;
-    font-weight: bold;
-    color: #fff;
+    position:           absolute;
+    top:                5px;
+    left:               5px;
+    width:              auto;
+    font-weight:        bold;
+    color:              #fff;
 }
 </style>`;
 class DebugPanel extends HTMLElement {
