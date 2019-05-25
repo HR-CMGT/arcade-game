@@ -1,11 +1,11 @@
 class Joystick {
 
-    private DEBUG: boolean = true;
+    private DEBUG           : boolean   = true;
 
     // BUT1 and BUT2 are the indexes of the redirect function. 
     // When both are pressed, redirect to homepage
-    private readonly BUT1: number = 8
-    private readonly BUT2: number = 9
+    private readonly BUT1   : number    = 8
+    private readonly BUT2   : number    = 9
 
     // FIELDS
     private joystickNumber  : number    = 0
@@ -20,26 +20,26 @@ class Joystick {
 
     // PROPERTIES
     // Axes as booleans
-    public get Left()   : boolean { return (this.axes[0] == -1) }
-    public get Right()  : boolean { return (this.axes[0] == 1)  }
-    public get Up()     : boolean { return (this.axes[1] == -1) }
-    public get Down()   : boolean { return (this.axes[1] == 1)  }
+    public get Left()           : boolean { return (this.axes[0] == -1) }
+    public get Right()          : boolean { return (this.axes[0] == 1)  }
+    public get Up()             : boolean { return (this.axes[1] == -1) }
+    public get Down()           : boolean { return (this.axes[1] == 1)  }
     
     // Axes as direction
     // values are -1, 0, 1 because arcade sticks are digital
-    public get X() : number { return Math.round(this.axes[0]) }
-    public get Y() : number { return Math.round(this.axes[1]) }
+    public get Y()              : number  { return Math.round(this.axes[1]) }
+    public get X()              : number  { return Math.round(this.axes[0]) }
 
     // Joystick identifier
-    public get JoystickNumber()     : number            { return this.joystickNumber }
-    public get ButtonEvents()       : string[]          { return this.buttonEvents }
+    public get JoystickNumber() : number  { return this.joystickNumber }
+    public get ButtonEvents()   : string[]{ return this.buttonEvents }
 
     // Current gamepad
-    public get Gamepad()            : Gamepad           { return this.gamepad }
-    public set Gamepad(gamepad:Gamepad)                 { this.gamepad = gamepad; }
+    public get Gamepad()        : Gamepad { return this.gamepad }
+    public set Gamepad(gamepad:Gamepad)   { this.gamepad = gamepad; }
 
     // previous gamepad
-    public get PreviousGamepad()    : Gamepad           { return this.previousGamepad }
+    public get PreviousGamepad(): Gamepad { return this.previousGamepad }
     public set PreviousGamepad(previousGamepad:Gamepad) { this.previousGamepad = previousGamepad; }
 
     /**

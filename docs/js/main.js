@@ -163,6 +163,8 @@ class Joystick {
     get Right() { return (this.axes[0] == 1); }
     get Up() { return (this.axes[1] == -1); }
     get Down() { return (this.axes[1] == 1); }
+    get Y() { return Math.round(this.axes[1]); }
+    get X() { return Math.round(this.axes[0]); }
     get JoystickNumber() { return this.joystickNumber; }
     get ButtonEvents() { return this.buttonEvents; }
     get Gamepad() { return this.gamepad; }
