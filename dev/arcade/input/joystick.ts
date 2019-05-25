@@ -19,11 +19,16 @@ class Joystick {
     private debugPanel      : DebugPanel
 
     // PROPERTIES
-    // Axes
+    // Axes as booleans
     public get Left()   : boolean { return (this.axes[0] == -1) }
     public get Right()  : boolean { return (this.axes[0] == 1)  }
     public get Up()     : boolean { return (this.axes[1] == -1) }
     public get Down()   : boolean { return (this.axes[1] == 1)  }
+    
+    // Axes as direction
+    // values are -1, 0, 1 because arcade sticks are digital
+    public get X() : number { return Math.round(this.axes[0]) }
+    public get Y() : number { return Math.round(this.axes[1]) }
 
     // Joystick identifier
     public get JoystickNumber()     : number            { return this.joystickNumber }
