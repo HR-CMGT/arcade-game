@@ -38,7 +38,8 @@ class Game {
     constructor() {
         this.circles = [];
         this.arcade = new Arcade(this);
-        document.addEventListener("joystickcreated", (e) => this.initJoystick(e));
+        this.joystickListener = (e) => this.initJoystick(e);
+        document.addEventListener("joystickcreated", this.joystickListener);
         this.gameLoop();
     }
     initJoystick(e) {
@@ -68,6 +69,13 @@ class Game {
                 console.log('Down');
         }
         requestAnimationFrame(() => this.gameLoop());
+    }
+    disconnect() {
+        document.removeEventListener("joystickcreated", this.joystickListener);
+        for (const circle of this.circles) {
+            circle.remove();
+        }
+        this.circles = [];
     }
 }
 window.addEventListener("load", () => new Game());
@@ -115,6 +123,7 @@ class Arcade {
         if (this.DEBUG)
             this.showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.");
         this.removeJoystick(e.gamepad.index);
+        this.game.disconnect();
     }
     createAndAddJoystick(joystickNumber, numOfButtons) {
         let joystickCheck = this.getJoystickByNumber(joystickNumber);

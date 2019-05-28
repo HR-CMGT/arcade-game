@@ -61,6 +61,7 @@ class Arcade{
         if(this.DEBUG) { console.log('Game pad disconnected') }
         if(this.DEBUG) this.showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.")
         this.removeJoystick(e.gamepad.index)
+        this.game.disconnect()
     }
 
     /**

@@ -1,6 +1,6 @@
 class Game {
     private arcade : Arcade
-    private fireListener: EventListener
+    private joystickListener: EventListener
 
     // example of game objects
     private circles : Circle[] = []
@@ -10,7 +10,8 @@ class Game {
         this.arcade = new Arcade(this)
         
         // The game must wait for de joysticks to connect
-        document.addEventListener("joystickcreated", (e: Event) => this.initJoystick(e as CustomEvent) )
+        this.joystickListener = (e: Event) => this.initJoystick(e as CustomEvent)
+        document.addEventListener("joystickcreated",  this.joystickListener)
 
         this.gameLoop()
     }
@@ -53,6 +54,14 @@ class Game {
         }
 
         requestAnimationFrame(() => this.gameLoop())
+    }
+
+    public disconnect() {
+        document.removeEventListener("joystickcreated", this.joystickListener)
+        for (const circle of this.circles) {
+            circle.remove()
+        }
+        this.circles = []
     }
 }
 
