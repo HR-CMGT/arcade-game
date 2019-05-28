@@ -3,6 +3,7 @@ class Arcade{
     private joysticks               : Joystick[]
     private readonly REDIRECT_URL   : string = "http://hr-cmgt.github.io/arcade-server"
     private multiplayer             : boolean = false
+    private game                    : Game
     // PROPERTIES
     public get Joysticks()          : Joystick[] { return this.joysticks }
 
@@ -10,10 +11,13 @@ class Arcade{
      * Creates an arcade 'cabinet' 
      * @param mp 'true' for 2 joystick multiplayer Arcade (default single player)
      */
-    constructor(mp:boolean = false) {
+    constructor(game: Game, mp:boolean = false) {
+        this.game        = game
         this.multiplayer = mp
-        this.joysticks = []
+        this.joysticks   = []
     
+        if(this.DEBUG) this.showStatus("Gamepad is NOT connected. Press a button to connect")
+
         document.addEventListener("redirect", () => this.onRedirect())
         window.addEventListener("gamepadconnected",     (e: Event) => this.onGamePadConnected(e as GamepadEvent))
         window.addEventListener("gamepaddisconnected",  (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
@@ -45,6 +49,8 @@ class Arcade{
                 joystick.PreviousGamepad = e.gamepad
             }
         }
+
+        if(this.DEBUG) this.removeStatus()
     }
 
     /**
@@ -52,8 +58,9 @@ class Arcade{
      * @param e Gamepad event
      */
     private onGamePadDisconnected(e: GamepadEvent): void {
-        if (this.DEBUG) { console.log('Game pad disconnected') }
-        this.removeJoystick(e.gamepad.index);
+        if(this.DEBUG) { console.log('Game pad disconnected') }
+        if(this.DEBUG) this.showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.")
+        this.removeJoystick(e.gamepad.index)
     }
 
     /**
@@ -101,5 +108,30 @@ class Arcade{
             }
         }
         return null;
+    }
+
+    private showStatus(content : string) {
+        let container 
+        let p
+        if(!(container = document.getElementsByTagName("status")[0])) { 
+            container = document.createElement("status")
+            document.body.append(container)
+        }
+        if(container) {
+            if(!(p = container.getElementsByTagName("p")[0])) {
+                p = document.createElement("p")
+                container.appendChild(p)
+            }
+        }
+        if(p) {
+            p.innerHTML = content
+        }
+    }
+
+    private removeStatus() {
+        let status
+        if(status = document.getElementsByTagName("status")[0]) {
+            status.remove()
+        }
     }
 }

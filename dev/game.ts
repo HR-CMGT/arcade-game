@@ -7,7 +7,7 @@ class Game {
 
     constructor() {
         // create arcade cabinet with 2 joysticks (with 6 buttons)
-        this.arcade = new Arcade()
+        this.arcade = new Arcade(this)
         
         // The game must wait for de joysticks to connect
         document.addEventListener("joystickcreated", (e: Event) => this.initJoystick(e as CustomEvent) )

@@ -37,7 +37,7 @@ window.customElements.define("circle-component", Circle);
 class Game {
     constructor() {
         this.circles = [];
-        this.arcade = new Arcade();
+        this.arcade = new Arcade(this);
         document.addEventListener("joystickcreated", (e) => this.initJoystick(e));
         this.gameLoop();
     }
@@ -72,12 +72,15 @@ class Game {
 }
 window.addEventListener("load", () => new Game());
 class Arcade {
-    constructor(mp = false) {
+    constructor(game, mp = false) {
         this.DEBUG = true;
         this.REDIRECT_URL = "http://hr-cmgt.github.io/arcade-server";
         this.multiplayer = false;
+        this.game = game;
         this.multiplayer = mp;
         this.joysticks = [];
+        if (this.DEBUG)
+            this.showStatus("Gamepad is NOT connected. Press a button to connect");
         document.addEventListener("redirect", () => this.onRedirect());
         window.addEventListener("gamepadconnected", (e) => this.onGamePadConnected(e));
         window.addEventListener("gamepaddisconnected", (e) => this.onGamePadDisconnected(e));
@@ -102,11 +105,15 @@ class Arcade {
                 joystick.PreviousGamepad = e.gamepad;
             }
         }
+        if (this.DEBUG)
+            this.removeStatus();
     }
     onGamePadDisconnected(e) {
         if (this.DEBUG) {
             console.log('Game pad disconnected');
         }
+        if (this.DEBUG)
+            this.showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.");
         this.removeJoystick(e.gamepad.index);
     }
     createAndAddJoystick(joystickNumber, numOfButtons) {
@@ -138,6 +145,29 @@ class Arcade {
             }
         }
         return null;
+    }
+    showStatus(content) {
+        let container;
+        let p;
+        if (!(container = document.getElementsByTagName("status")[0])) {
+            container = document.createElement("status");
+            document.body.append(container);
+        }
+        if (container) {
+            if (!(p = container.getElementsByTagName("p")[0])) {
+                p = document.createElement("p");
+                container.appendChild(p);
+            }
+        }
+        if (p) {
+            p.innerHTML = content;
+        }
+    }
+    removeStatus() {
+        let status;
+        if (status = document.getElementsByTagName("status")[0]) {
+            status.remove();
+        }
     }
 }
 class Joystick {

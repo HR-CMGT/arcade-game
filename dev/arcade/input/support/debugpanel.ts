@@ -83,10 +83,10 @@ class DebugPanel extends HTMLElement{
     private right           : HTMLElement
     private up              : HTMLElement
     private down            : HTMLElement
-
+    
+    private rootElement     : HTMLElement
+    
     public Axes             : number[]      = []
-
-    private rootElement : HTMLElement
 
     constructor(joystick : Joystick, numOfButtons : number) {
         super()
