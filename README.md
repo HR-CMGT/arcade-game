@@ -6,6 +6,7 @@ Instructions for adding your game to the HR CMGT ARCADE CABINET
 
 - Serving your game
 - Game Size
+- Audio
 - Joystick controls
 - Phaser Gamepad
 - Redirecting to the game server
@@ -45,6 +46,33 @@ Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if y
 A Phaser game also has a live `resize()` event, see the [example here on CodePen](https://codepen.io/yandeu/pen/oVBybd)
 
 ⚠️ Experimental! [Phaser 3.17 has new scaling options](https://phaser.io/phaser3/devlog/136)
+
+## Audio
+
+In a regular HTML page, you can play audio by creating an Audio tag and calling `play()` on it. 
+
+```
+let music : HTMLAudioElement = new Audio()
+music.src = "./sound/bgmusic.mp3"
+music.play()
+```
+
+In Phaser, you can use the built-in audio code:
+
+```
+preload() {
+    this.load.audio('theme', 'assets/audio/oedipus_wizball_highscore.mp3')
+}
+create() {
+    let music = this.sound.add('theme')
+    music.play()
+}
+```
+
+
+### ⚠️ Autoplay audio
+
+Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
 
 ## Joystick
 
