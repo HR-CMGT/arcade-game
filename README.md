@@ -190,4 +190,4 @@ window.location.href = "http://hr-cmgt.github.io/arcade-server"
 ## Credits
 
 - [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
-- [Louis](https://github.com/KokoDoko/ruimtegruis/issues?q=is%3Apr+author%3Alouis-lau) for fixing the game scaling bug.
+- [Louis](https://github.com/louis-lau) for fixing the game scaling bug.
