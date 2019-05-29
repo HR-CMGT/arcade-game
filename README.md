@@ -7,7 +7,7 @@ Instructions for adding your game to the HR CMGT ARCADE CABINET
 - Serving your game
 - Game Size
 - Audio
-- Joystick controls
+- 🕹 Joystick controls
 - Phaser Gamepad
 - Redirecting to the game server
 
@@ -43,9 +43,23 @@ Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if y
 ```
 ## Phaser scaling
 
-A Phaser game also has a live `resize()` event, see the [example here on CodePen](https://codepen.io/yandeu/pen/oVBybd)
+If you update phaser to 3.17 (`npm install phaser@3.17.0`) you can use the [new scaling options](https://phaser.io/phaser3/devlog/136) in your config file. [Ruimtegruis example code](https://github.com/KokoDoko/ruimtegruis/blob/master/src/game.ts)
 
-⚠️ Experimental! [Phaser 3.17 has new scaling options](https://phaser.io/phaser3/devlog/136)
+GAME.TS
+```typescript
+const config: Phaser.Types.Core.GameConfig = {
+    scale: {
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.Center.CENTER_BOTH
+    },
+    // @ts-ignore Issue with Typescript definitions in Phaser 3.17.0
+    scene: [BootScene, StartScene, GameScene, GameOver],
+    ...etc
+}
+```
+⚠️ Don't forget the `@ts-ignore` line in the example above.
+
+⚠️ After installing Phaser 3.17 you can delete the `phaser.d.ts` file in the `src` folder! 
 
 ## Audio
 
@@ -74,7 +88,7 @@ create() {
 
 Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
 
-## Joystick
+## 🕹 Joystick
 
 Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
 
