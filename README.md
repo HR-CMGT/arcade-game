@@ -2,7 +2,7 @@
 
 ![screenshot](./screenshot.png)
 
-Instructions for adding your game to the HR CMGT ARCADE CABINET
+### Instructions for adding your game to the HR CMGT ARCADE CABINET
 
 - Serving your game
 - Game Size
@@ -185,3 +185,9 @@ Your game needs to redirect to the arcade game server on button press 8 and 9. Y
 ```
 window.location.href = "http://hr-cmgt.github.io/arcade-server"
 ```
+
+
+## Credits
+
+- [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
+- [Louis](https://github.com/KokoDoko/ruimtegruis/issues?q=is%3Apr+author%3Alouis-lau) for fixing the game scaling bug.
