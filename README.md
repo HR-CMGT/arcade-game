@@ -14,11 +14,11 @@ Instructions for adding your game to the HR CMGT ARCADE CABINET
 
 Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable github pages to publish the docs folder. Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json).
 
+[You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
+
 ![screenshot](./cart.png)
 
 If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
-
-[You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
 
 ## Game Size
 
