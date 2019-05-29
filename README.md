@@ -122,7 +122,7 @@ You can test this in your own game with one of the available joysticks, or with 
 
 #### Using this joystick class in Phaser
 
-If you use this class in phaser, you have to add `export` and `import` keywords to the classes.
+If you use this class in phaser, you have to add `export` and `import` keywords to the classes. 
 
 ```
 export class JoyStick {
@@ -130,6 +130,8 @@ export class JoyStick {
 
 import { JoyStick } from "./joystick"
 ```
+Then, you have to add the `new Arcade()` code in your main game.ts Class. [Check out the example](https://github.com/KokoDoko/ruimtegruis)
+
 
 ## Phaser GamePad API
 
