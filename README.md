@@ -187,6 +187,11 @@ window.location.href = "http://hr-cmgt.github.io/arcade-server"
 ```
 
 
+## Known issues
+
+- Certain versions of Chrome on Windows (versions to be defined later) detect extra undefined/unknown Gamepads, which breaks this library.
+
+
 ## Credits
 
 - [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
