@@ -7,8 +7,10 @@
 - Serving your game
 - Game Size
 - Audio
-- 🕹 Joystick controls
-- Phaser Gamepad
+- 🕹 Joystick 
+   - From Javascript
+   - How to use the arcade stick in Phaser
+   - Phaser Gamepad
 - Redirecting to the game server
 
 ## Serving your game
@@ -88,7 +90,9 @@ create() {
 
 Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
 
-## 🕹 Joystick
+# 🕹 Joystick
+
+## Using the joystick without Phaser
 
 Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
 
@@ -130,26 +134,113 @@ class Game {
     }
 }
 ```
-To see how to control a spaceship with the joystick, you can check the [Ruimtegruis Ship Example](https://github.com/KokoDoko/ruimtegruis/blob/master/src/objects/ship.ts)
 
 You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
-#### Using this joystick class in Phaser
+## Using the joystick class with Phaser
 
 If you use this class in phaser, you have to add `export` and `import` keywords to the classes. 
 
+- Place the arcade folder in the `src` folder
+- Add a `new Arcade()` instance to the top-level app class of your game. Mostly this is `app.ts`.
+- From other classes (scenes or players) you can then get the Arcade from `app.ts` and read the joysticks.
+
+APP.TS
 ```
-export class JoyStick {
+import { Arcade } from "./arcade/arcade"
+
+const config: GameConfig = {
+};
+
+export class Neko extends Phaser.Game {
+    public arcade:Arcade
+    constructor(config: GameConfig) {
+        super(config)
+        this.arcade = new Arcade()
+    }
 }
-
-import { JoyStick } from "./joystick"
 ```
-Then, you have to add the `new Arcade()` code in your main game.ts Class. [Check out the example](https://github.com/KokoDoko/ruimtegruis)
+EXAMPLE START SCENE WITH START BUTTON
+```
+import { UI } from "./ui-scene"
+import { Arcade } from "../arcade/arcade"
+import { Neko } from "../app"
 
+export class StartScene extends Phaser.Scene {
+
+    private arcade : Arcade
+    private nextGameListener : EventListener
+
+    constructor() {
+        super({key: "StartScene"})
+    }
+
+    create(): void {
+        let g = this.game as Neko
+        this.arcade = g.arcade
+        
+        this.nextGameListener = () => this.nextGame()
+        document.addEventListener("joystick0button0", this.nextGameListener)
+    }
+    
+    private nextGame(){
+        document.removeEventListener("joystick0button0", this.nextGameListener)
+        this.scene.start('GameScene')
+    }
+    
+    public update(){
+        for (let joystick of this.arcade.Joysticks) {
+            joystick.update()
+        }
+    }
+}
+```
+EXAMPLE PLAYER WITH JOYSTICK CONTROLS
+```
+import { Arcade } from "../arcade/arcade"
+import { Neko } from "../app"
+
+export class Player extends Phaser.Physics.Arcade.Sprite {
+
+    private arcade : Arcade
+
+    constructor(scene) {
+        super(scene, 0, 500)
+        
+        let g = this.scene.game as Neko
+        this.arcade = g.arcade
+
+        document.addEventListener("joystick0button0", () => this.handleFireButton())
+    }
+    
+    private handleFireButton():void{
+        console.log("fire!")
+    }
+    
+    public update(): void {
+        this.joystickInput()
+    }
+    
+    private joystickInput():void {
+        for (let joystick of this.arcade.Joysticks) {
+            joystick.update()
+        }
+        if (this.arcade.Joysticks[0]) {
+            this.setVelocityX(this.arcade.Joysticks[0].X * 400)
+            this.setVelocityY(this.arcade.Joysticks[0].Y * 400)
+        }
+    }
+}
+```
+
+### Example projects
+
+- [Ruimtegruis](https://github.com/KokoDoko/ruimtegruis)
+- [N-3KO](https://github.com/Drelofs/N-3KO)
 
 ## Phaser GamePad API
 
-In Phaser, it's probably easier to use [Phaser's GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
+Phaser also has a native [GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
 
 CONFIG
 ```
