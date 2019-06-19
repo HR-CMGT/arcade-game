@@ -5,7 +5,7 @@
 # Adding your game to the ARCADE CABINET
 
 - 🕹 Joystick 
-   - How to use the arcade stick in Phaser
+   - Arcade stick in Phaser
    - Phaser Gamepad
    - From Javascript
 - Serving your game
@@ -13,51 +13,6 @@
 - Audio
 
 # 🕹 Joystick
-
-## Using the joystick without Phaser
-
-Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
-
-- The position of the stick can be read in the update() function.
-- Button presses can be detected with an eventListener. 
-
-```
-class Game {
-    private arcade : Arcade
-
-    constructor() {
-        this.arcade = new Arcade()
-        
-        document.addEventListener("joystick0button0", () => this.playerOneFire())
-
-        this.gameLoop()
-    }
-    
-    private playerOneFire(){
-        console.log("player one fired!")
-    }
-
-    private gameLoop() : void {
-        for(let joystick of this.arcade.Joysticks){
-            joystick.update()
-            
-            // just log the values
-            if(joystick.Left)  console.log('LEFT')
-            if(joystick.Right) console.log('RIGHT')
-            if(joystick.Up)    console.log('UP')
-            if(joystick.Down)  console.log('Down')
-            
-            // use the values to set X and Y velocity of a player
-            playerOne.setVelocityX(joystick.X * 400)
-            playerOne.setVelocityY(joystick.Y * 400)
-        }
-
-        requestAnimationFrame(() => this.gameLoop())
-    }
-}
-```
-
-You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
 ## Using the joystick class with Phaser
 
@@ -191,7 +146,50 @@ class Ship {
     }
 }
 ```
+## Using the joystick without Phaser
 
+Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
+
+- The position of the stick can be read in the update() function.
+- Button presses can be detected with an eventListener. 
+
+```
+class Game {
+    private arcade : Arcade
+
+    constructor() {
+        this.arcade = new Arcade()
+        
+        document.addEventListener("joystick0button0", () => this.playerOneFire())
+
+        this.gameLoop()
+    }
+    
+    private playerOneFire(){
+        console.log("player one fired!")
+    }
+
+    private gameLoop() : void {
+        for(let joystick of this.arcade.Joysticks){
+            joystick.update()
+            
+            // just log the values
+            if(joystick.Left)  console.log('LEFT')
+            if(joystick.Right) console.log('RIGHT')
+            if(joystick.Up)    console.log('UP')
+            if(joystick.Down)  console.log('Down')
+            
+            // use the values to set X and Y velocity of a player
+            playerOne.setVelocityX(joystick.X * 400)
+            playerOne.setVelocityY(joystick.Y * 400)
+        }
+
+        requestAnimationFrame(() => this.gameLoop())
+    }
+}
+```
+
+You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
 ## Serving your game
 
