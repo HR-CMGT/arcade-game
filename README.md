@@ -2,93 +2,15 @@
 
 ![screenshot](./screenshot.png)
 
-### Instructions for adding your game to the HR CMGT ARCADE CABINET
+# Adding your game to the ARCADE CABINET
 
+- 🕹 Joystick 
+   - How to use the arcade stick in Phaser
+   - Phaser Gamepad
+   - From Javascript
 - Serving your game
 - Game Size
 - Audio
-- 🕹 Joystick 
-   - From Javascript
-   - How to use the arcade stick in Phaser
-   - Phaser Gamepad
-- Redirecting to the game server
-
-## Serving your game
-
-Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable github pages to publish the docs folder. Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json).
-
-[You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
-
-![screenshot](./cart.png)
-
-If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
-
-## Game Size
-
-The game window is 1440 x 900. If your game is smaller you have several options to display the game:
-
-Use CSS to center a 800 x 600 game in the window on a black background.
-```
-#game {
-    width:800px;
-    height:600px;
-    margin: 150px 320px;
-}
-```
-Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.25 (1000/800)
-```
-#game {
-   width:800px;
-   height:600px;
-   transform:scale(1.25);
-}
-```
-## Phaser scaling
-
-If you update phaser to 3.17 (`npm install phaser@3.17.0`) you can use the [new scaling options](https://phaser.io/phaser3/devlog/136) in your config file. [Ruimtegruis example code](https://github.com/KokoDoko/ruimtegruis/blob/master/src/game.ts)
-
-GAME.TS
-```typescript
-const config: Phaser.Types.Core.GameConfig = {
-    scale: {
-        mode: Phaser.Scale.ScaleModes.FIT,
-        autoCenter: Phaser.Scale.Center.CENTER_BOTH
-    },
-    // @ts-ignore Issue with Typescript definitions in Phaser 3.17.0
-    scene: [BootScene, StartScene, GameScene, GameOver],
-    ...etc
-}
-```
-⚠️ Don't forget the `@ts-ignore` line in the example above.
-
-⚠️ After installing Phaser 3.17 you can delete the `phaser.d.ts` file in the `src` folder! 
-
-## Audio
-
-In a regular HTML page, you can play audio by creating an Audio tag and calling `play()` on it. 
-
-```
-let music : HTMLAudioElement = new Audio()
-music.src = "./sound/bgmusic.mp3"
-music.play()
-```
-
-In Phaser, you can use the built-in audio code:
-
-```
-preload() {
-    this.load.audio('theme', 'assets/audio/oedipus_wizball_highscore.mp3')
-}
-create() {
-    let music = this.sound.add('theme')
-    music.play()
-}
-```
-
-
-### ⚠️ Autoplay audio
-
-Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
 
 # 🕹 Joystick
 
@@ -270,18 +192,87 @@ class Ship {
 }
 ```
 
-## Redirecting to the game server
 
-Your game needs to redirect to the arcade game server on button press 8 and 9. You can find example code here in the joystick class, or you can build your own redirect:
+## Serving your game
+
+Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable github pages to publish the docs folder. Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json).
+
+[You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
+
+![screenshot](./cart.png)
+
+If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
+
+## Game Size
+
+The game window is 1440 x 900. If your game is smaller you have several options to display the game:
+
+Use CSS to center a 800 x 600 game in the window on a black background.
 ```
-window.location.href = "http://hr-cmgt.github.io/arcade-server"
+#game {
+    width:800px;
+    height:600px;
+    margin: 150px 320px;
+}
+```
+Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.25 (1000/800)
+```
+#game {
+   width:800px;
+   height:600px;
+   transform:scale(1.25);
+}
+```
+## Phaser scaling
+
+If you update phaser to 3.17 (`npm install phaser@3.17.0`) you can use the [new scaling options](https://phaser.io/phaser3/devlog/136) in your config file. [Ruimtegruis example code](https://github.com/KokoDoko/ruimtegruis/blob/master/src/game.ts)
+
+GAME.TS
+```typescript
+const config: Phaser.Types.Core.GameConfig = {
+    scale: {
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.Center.CENTER_BOTH
+    },
+    // @ts-ignore Issue with Typescript definitions in Phaser 3.17.0
+    scene: [BootScene, StartScene, GameScene, GameOver],
+    ...etc
+}
+```
+⚠️ Don't forget the `@ts-ignore` line in the example above.
+
+⚠️ After installing Phaser 3.17 you can delete the `phaser.d.ts` file in the `src` folder! 
+
+## Audio
+
+In a regular HTML page, you can play audio by creating an Audio tag and calling `play()` on it. 
+
+```
+let music : HTMLAudioElement = new Audio()
+music.src = "./sound/bgmusic.mp3"
+music.play()
 ```
 
+In Phaser, you can use the built-in audio code:
+
+```
+preload() {
+    this.load.audio('theme', 'assets/audio/oedipus_wizball_highscore.mp3')
+}
+create() {
+    let music = this.sound.add('theme')
+    music.play()
+}
+```
+
+
+### ⚠️ Autoplay audio
+
+Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
 
 ## Known issues
 
 - Certain versions of Chrome on Windows (versions to be defined later) detect extra undefined/unknown Gamepads, which breaks this library.
-
 
 ## Credits
 
