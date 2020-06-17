@@ -8,7 +8,7 @@
    - Arcade stick in Phaser
    - Phaser Gamepad
    - From Javascript
-- Serving your game
+- Serve your game online
 - Game Size
 - Audio
 
@@ -191,11 +191,28 @@ class Game {
 
 You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
 
-## Serving your game
+## Serve your game online
 
-Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable github pages to publish the docs folder. Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json).
+### Enable github pages
+
+Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable **github pages** to publish the **docs** folder. 
+
+### Build phaser game
+
+In Phaser, you need to run `npm run build` to create your final game build. You may have to change the `package.json` file to build in the `docs` folder. Also add the `--public-url .` option so that your game can run from the correct url.
+
+package.json
+```
+"build" : "parcel build src/index.html --output-dir docs --public-url . "
+```
+
+### Add game to arcade cabinet JSON
+
+Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game.
 
 [You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
+
+### Add cartridge image
 
 ![screenshot](./cart.png)
 
