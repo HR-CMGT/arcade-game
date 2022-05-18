@@ -1,11 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { Arcade } from './arcade/arcade'
 import { Joystick } from './arcade/joystick'
-import { Game } from './game'
 
 export class Box extends PIXI.Sprite {
     
-    speed    : number   = 3
     joystick : Joystick
     
     constructor(joystick: Joystick) {
