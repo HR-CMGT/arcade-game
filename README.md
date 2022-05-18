@@ -196,13 +196,14 @@ class Game {
 }
 ```
 
-If your game is smaller or bigger, you can scale the canvas using CSS
+If your game is smaller or bigger, you can scale the canvas using CSS. 
 
 ```css
 canvas {
     width:100vw;
 }
 ```
+If your aspect ratio is not `16:9` you can instead use `height:100vh`.
 
 <br>
 <br>
