@@ -146,7 +146,7 @@ export class Player extends PIXI.Sprite {
 
 # Serve your game online
 
-Your game needs to be hosted online, you can do this with by enabling **github pages** and publishing the **docs** folder. 
+Your game needs to be hosted online, you can do this by enabling **github pages** and publishing the **docs** folder. 
 
 <br>
 
@@ -242,6 +242,7 @@ class Game {
 ## Known issues
 
 - Certain versions of Chrome on Windows detect extra undefined/unknown Gamepads, which can cause issues with this library.
+- Safari on Mac OS seems to miss button clicks?
 
 <br>
 <br>
