@@ -158,7 +158,7 @@ In Pixi, you need to run `npm run build` to create your final game build. This w
 
 ## Add game to arcade cabinet JSON
 
-Your game name and url need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game. You can test the arcade cabinet at:  https://hr-cmgt.github.io/arcade-server/
+Your game `name` and `url` need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game by sending the below information. You can test the arcade cabinet yourself at:  https://hr-cmgt.github.io/arcade-server/
 
 ```json
 [
@@ -194,44 +194,13 @@ class Game {
         this.pixi = new PIXI.Application({ width: 1440, height: 900})
     }
 }
-
 ```
 
-If your game is smaller you have several options to display your game:
+If your game is smaller or bigger, you can scale the canvas using CSS
 
-<br>
-
-### CSS Scaling
-
-Use CSS `transform` to scale your game up to 1440 pixels wide. For example, if your game is `800` pixels wide, the scale should be `1.8` (1440/800)
 ```css
 canvas {
-   width:800px;
-   height:600px;
-   transform:scale(1.8);
-}
-```
-<Br>
-
-### Pixi scaling
-
-You can also scale up the pixi canvas
-
-```typescript
-class Game {
-    constructor(){
-        this.pixi = new PIXI.Application({ width: 800, height: 600})
-        this.pixi.view.scale.set(1.8)
-    }
-}
-```
-Or simply set the game size to the window size. Note that this only works if you use this way of positioning everywhere in your game!
-
-```typescript
-class Game {
-    constructor(){
-        this.pixi = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight})
-    }
+    width:100vw;
 }
 ```
 
