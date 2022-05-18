@@ -15,7 +15,7 @@
 
 ## Example project
 
-Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one of the CMGT arcade sticks. Then check the online example or download and run this repository, to see if you can control the box.
+Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one of the CMGT arcade sticks. Then try [this online example](https://hr-cmgt.github.io/arcade-game/) or download and run this repository, to see if you can control the box.
 
 <br>
 <br>
@@ -146,7 +146,7 @@ export class Player extends PIXI.Sprite {
 
 # Serve your game online
 
-Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable **github pages** to publish the **docs** folder. 
+Your game needs to be hosted online, you can do this with by enabling **github pages** and publishing the **docs** folder. 
 
 <br>
 
@@ -158,7 +158,7 @@ In Pixi, you need to run `npm run build` to create your final game build. This w
 
 ## Add game to arcade cabinet JSON
 
-Your game name and url need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game. [You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/).
+Your game name and url need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game. You can test the arcade cabinet at:  https://hr-cmgt.github.io/arcade-server/
 
 ```json
 [
@@ -203,9 +203,9 @@ If your game is smaller you have several options to display your game:
 
 ### CSS Scaling
 
-Use CSS `transform` to scale your game up to 1440 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.8 (1440/800)
+Use CSS `transform` to scale your game up to 1440 pixels wide. For example, if your game is `800` pixels wide, the scale should be `1.8` (1440/800)
 ```css
-#game {
+canvas {
    width:800px;
    height:600px;
    transform:scale(1.8);
@@ -225,7 +225,7 @@ class Game {
     }
 }
 ```
-Or simply set the game size to the window size. Note that this only works if you use these sizes everywhere in your game!
+Or simply set the game size to the window size. Note that this only works if you use this way of positioning everywhere in your game!
 
 ```typescript
 class Game {
