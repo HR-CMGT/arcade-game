@@ -2,215 +2,177 @@
 
 ![screenshot](./screenshot.png)
 
-# Adding your game to the ARCADE CABINET
+## Adding your game to the Arcade Cabinet
 
-- 🕹 Joystick 
-   - Arcade stick in Phaser
-   - Phaser Gamepad
-   - From Javascript
+- Example project
+- Joystick and gamepad
 - Serve your game online
 - Game Size
-- Audio
 
-# 🕹 Joystick
+<br>
+<br>
+<br>
 
-## Using the joystick class with Phaser
+## Example project
 
-If you use this class in phaser, you have to add `export` and `import` keywords to the classes. 
+Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one of the CMGT arcade sticks. Then check the online example or download and run this repository, to see if you can control the box.
 
-- Place the arcade folder in the `src` folder
-- Add a `new Arcade()` instance to the top-level app class of your game. Mostly this is `app.ts`.
-- From other classes (scenes or players) you can then get the Arcade from `app.ts` and read the joysticks.
+<br>
+<br>
+<br>
 
-APP.TS
-```
+## 🕹 🎮 Joystick and Gamepad
+
+The arcade class will detect if you use a gamepad 🎮 or the arcade cabinet joystick 🕹
+
+- Place the arcade folder from this repository in the `src` folder of your game.
+- Create an `arcade` property and add `this.arcade = new Arcade()`  to `Game.ts`. 
+- Create the event listener that waits for the joysticks connection.
+
+GAME.TS
+```typescript
 import { Arcade } from "./arcade/arcade"
 
-const config: GameConfig = {
-};
-
-export class Neko extends Phaser.Game {
-    public arcade:Arcade
-    constructor(config: GameConfig) {
-        super(config)
-        this.arcade = new Arcade()
-    }
-}
-```
-EXAMPLE START SCENE WITH START BUTTON
-```
-import { UI } from "./ui-scene"
-import { Arcade } from "../arcade/arcade"
-import { Neko } from "../app"
-
-export class StartScene extends Phaser.Scene {
-
-    private arcade : Arcade
-    private nextGameListener : EventListener
-
-    constructor() {
-        super({key: "StartScene"})
-    }
-
-    create(): void {
-        let g = this.game as Neko
-        this.arcade = g.arcade
-        
-        this.nextGameListener = () => this.nextGame()
-        document.addEventListener("joystick0button0", this.nextGameListener)
-    }
-    
-    private nextGame(){
-        document.removeEventListener("joystick0button0", this.nextGameListener)
-        this.scene.start('GameScene')
-    }
-    
-    public update(){
-        for (let joystick of this.arcade.Joysticks) {
-            joystick.update()
-        }
-    }
-}
-```
-EXAMPLE PLAYER WITH JOYSTICK CONTROLS
-```
-import { Arcade } from "../arcade/arcade"
-import { Neko } from "../app"
-
-export class Player extends Phaser.Physics.Arcade.Sprite {
-
-    private arcade : Arcade
-
-    constructor(scene) {
-        super(scene, 0, 500)
-        
-        let g = this.scene.game as Neko
-        this.arcade = g.arcade
-
-        document.addEventListener("joystick0button0", () => this.handleFireButton())
-    }
-    
-    private handleFireButton():void{
-        console.log("fire!")
-    }
-    
-    public update(): void {
-        this.joystickInput()
-    }
-    
-    private joystickInput():void {
-        for (let joystick of this.arcade.Joysticks) {
-            joystick.update()
-        }
-        if (this.arcade.Joysticks[0]) {
-            this.setVelocityX(this.arcade.Joysticks[0].X * 400)
-            this.setVelocityY(this.arcade.Joysticks[0].Y * 400)
-        }
-    }
-}
-```
-
-### Example projects
-
-- [Ruimtegruis](https://github.com/KokoDoko/ruimtegruis)
-- [N-3KO](https://github.com/Drelofs/N-3KO)
-
-## Phaser GamePad API
-
-Phaser also has a native [GamePad API](http://labs.phaser.io/edit.html?src=src/input\gamepad\twin%20stick%20shooter.js). 
-
-CONFIG
-```
-var config = {
-    input: {
-        gamepad: true
-    }
-}
-```
-GAME
-```
-class Ship {
-   create() {
-      this.input.gamepad.on('down', function (pad, button, index) {
-         console.log("gamepad connected!")
-      }
-    }
-
-    update() {
-       console.log(gamepad.leftStick.x)       // x axis of joystick
-       console.log(gamepad.A)                 // button A
-       
-       
-       this.setVelocityX(gamepad.leftStick.x * 400)        // set velocity with joystick
-       this.setVelocityY(gamepad.leftStick.y * 400)
-    }
-}
-```
-## Using the joystick without Phaser
-
-Add the example code from this repository to your game. Now you can listen to the arcade buttons and stick for one or two players. Check the example below:
-
-- The position of the stick can be read in the update() function.
-- Button presses can be detected with an eventListener. 
-
-```
 class Game {
-    private arcade : Arcade
+
+    arcade:Arcade
+    joystickListener: EventListener
 
     constructor() {
-        this.arcade = new Arcade()
-        
-        document.addEventListener("joystick0button0", () => this.playerOneFire())
-
-        this.gameLoop()
-    }
-    
-    private playerOneFire(){
-        console.log("player one fired!")
+        // pixi loader here
     }
 
-    private gameLoop() : void {
-        for(let joystick of this.arcade.Joysticks){
-            joystick.update()
-            
-            // just log the values
-            if(joystick.Left)  console.log('LEFT')
-            if(joystick.Right) console.log('RIGHT')
-            if(joystick.Up)    console.log('UP')
-            if(joystick.Down)  console.log('Down')
-            
-            // use the values to set X and Y velocity of a player
-            playerOne.setVelocityX(joystick.X * 400)
-            playerOne.setVelocityY(joystick.Y * 400)
-        }
+    doneLoading() {
+        this.arcade = new Arcade(this)
 
-        requestAnimationFrame(() => this.gameLoop())
+        // The game must wait for the joysticks to connect
+        this.joystickListener = (e: Event) => this.joyStickConnected(e as CustomEvent)
+        document.addEventListener("joystickcreated", this.joystickListener)
     }
 }
 ```
 
-You can test this in your own game with one of the available joysticks, or with your own PS4 / XBox controller.
+<br>
+<br>
+<br>
 
-## Serve your game online
+## The joystick is connected
 
-### Enable github pages
+After the joystick is connected, you can continue with setting up your game.
+
+```typescript
+class Game {
+
+    arcade:Arcade
+    joystickListener: EventListener
+    player:Player
+
+    constructor() {
+        // pixi loader here
+    }
+
+    doneLoading() {
+        // see above
+    }
+
+    joyStickConnected(e: CustomEvent) {
+        
+        let joystick = this.arcade.Joysticks[e.detail]
+
+        // just logging the buttons to check what is available
+        for (const buttonEvent of joystick.ButtonEvents) {
+            document.addEventListener(buttonEvent, () => console.log(buttonEvent))
+        }
+
+        // pass the joystick to the player class
+        this.player = new Player(joystick)
+
+        // you can also handle single buttons instead of the whole joystick:
+        // button 0 is the first button, X-Button on a PS4 controller
+        // document.addEventListener(joystick.ButtonEvents[0], () => this.handleJump())
+    }
+}
+```
+
+<br>
+<Br>
+<br>
+
+## Using the joystick in the player class
+
+In the above example you can see that the `Game.ts` class passes the joystick to the player : `new Player(joystick)`. The player can now also listen for joystick events. Note that we use a default white texture here for the sprite.
+
+```typescript
+import { Joystick } from "./arcade/joystick"
+
+export class Player extends PIXI.Sprite {
+
+    joystick: Joystick
+
+     constructor(joystick: Joystick) {
+        super(PIXI.Texture.WHITE)
+        
+        this.x = 100
+        this.y = 100
+        this.width = 30
+        this.height = 30
+
+        this.joystick = joystick
+
+        document.addEventListener(this.joystick.ButtonEvents[0], () => this.changeColor())
+    }
+
+    private changeColor(){
+        console.log("controller button pressed")
+        this.tint = Math.random() * 0xFFFFFF
+    }
+
+    public update() {
+        this.x += this.joystick.X
+        this.y += this.joystick.Y
+
+        // you can also check the left, right, up, down status individually
+        // if(this.joystick.Left)  this.x-=2
+        // if(this.joystick.Right) this.x+=2
+        // if(this.joystick.Up)    this.y-=2
+        // if(this.joystick.Down)  this.y+=2
+    }
+}
+```
+
+<br>
+<Br>
+<br>
+
+# Serve your game online
 
 Your game needs to be hosted online, preferably in the docs folder of your github repository (master branch). Enable **github pages** to publish the **docs** folder. 
 
-### Build phaser game
+<br>
 
-In Phaser, you need to run `npm run build` to create your final game build. You may have to change the `package.json` file to build in the `docs` folder. Also add the `--public-url .` option so that your game can run from the correct url.
+## Build PIXI game
 
-package.json
+In Pixi, you need to run `npm run build` to create your final game build. This will create a `docs` folder that is ready to be hosted without a live server running. 
+
+<br>
+
+## Add game to arcade cabinet JSON
+
+Your game name and url need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game. [You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/).
+
+```json
+[
+    {
+        "name": "Ruimtegruis",
+        "url": "https://bpikaar.github.io/ruimtegruis/",
+        "genres" : [1,1,1,0,0,0,0,0,0],
+        "players" : 2,
+        "cover": "cover_ruimtegruis.png"
+    }
+]
 ```
-"build" : "parcel build src/index.html --output-dir docs --public-url . "
-```
 
-### Add game to arcade cabinet JSON
-
-Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game.
-
-[You can test the arcade cabinet on your own computer](https://hr-cmgt.github.io/arcade-server/)
+<br>
 
 ### Add cartridge image
 
@@ -218,78 +180,73 @@ Your game needs to be listed in the [Games JSON file](https://hr-cmgt.github.io/
 
 If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
 
+<br>
+<br>
+<br>
+
 ## Game Size
 
-The game window is 1440 x 900. If your game is smaller you have several options to display the game:
+The arcade cabinet window is 1440 x 900. You can set your game to this size using: 
 
-Use CSS to center a 800 x 600 game in the window on a black background.
-```
-#game {
-    width:800px;
-    height:600px;
-    margin: 150px 320px;
+```typescript
+class Game {
+    constructor(){
+        this.pixi = new PIXI.Application({ width: 1440, height: 900})
+    }
 }
+
 ```
-Use CSS `transform` to scale your game up to 1000 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.25 (1000/800)
-```
+
+If your game is smaller you have several options to display your game:
+
+<br>
+
+### CSS Scaling
+
+Use CSS `transform` to scale your game up to 1440 pixels wide. For example, if your game is 800 pixels wide, the scale is 1.8 (1440/800)
+```css
 #game {
    width:800px;
    height:600px;
-   transform:scale(1.25);
+   transform:scale(1.8);
 }
 ```
-## Phaser scaling
+<Br>
 
-If you update phaser to 3.17 (`npm install phaser@3.17.0`) you can use the [new scaling options](https://phaser.io/phaser3/devlog/136) in your config file. [Ruimtegruis example code](https://github.com/KokoDoko/ruimtegruis/blob/master/src/game.ts)
+### Pixi scaling
 
-GAME.TS
+You can also scale up the pixi canvas
+
 ```typescript
-const config: Phaser.Types.Core.GameConfig = {
-    scale: {
-        mode: Phaser.Scale.ScaleModes.FIT,
-        autoCenter: Phaser.Scale.Center.CENTER_BOTH
-    },
-    // @ts-ignore Issue with Typescript definitions in Phaser 3.17.0
-    scene: [BootScene, StartScene, GameScene, GameOver],
-    ...etc
+class Game {
+    constructor(){
+        this.pixi = new PIXI.Application({ width: 800, height: 600})
+        this.pixi.view.scale.set(1.8)
+    }
 }
 ```
-⚠️ Don't forget the `@ts-ignore` line in the example above.
+Or simply set the game size to the window size. Note that this only works if you use these sizes everywhere in your game!
 
-⚠️ After installing Phaser 3.17 you can delete the `phaser.d.ts` file in the `src` folder! 
-
-## Audio
-
-In a regular HTML page, you can play audio by creating an Audio tag and calling `play()` on it. 
-
-```
-let music : HTMLAudioElement = new Audio()
-music.src = "./sound/bgmusic.mp3"
-music.play()
-```
-
-In Phaser, you can use the built-in audio code:
-
-```
-preload() {
-    this.load.audio('theme', 'assets/audio/oedipus_wizball_highscore.mp3')
-}
-create() {
-    let music = this.sound.add('theme')
-    music.play()
+```typescript
+class Game {
+    constructor(){
+        this.pixi = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight})
+    }
 }
 ```
 
-
-### ⚠️ Autoplay audio
-
-Note that modern browsers will not autoplay audio! You will need a user interaction on the page first, for example a button click on the loading screen. This button click can then trigger the background music. After this first button click you can use autoplaying audio in the rest of your game.
+<br>
+<br>
+<br>
 
 ## Known issues
 
-- Certain versions of Chrome on Windows (versions to be defined later) detect extra undefined/unknown Gamepads, which breaks this library.
+- Certain versions of Chrome on Windows detect extra undefined/unknown Gamepads, which can cause issues with this library.
+
+<br>
+<br>
+<br>
 
 ## Credits
 
 - [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
-- [Louis](https://github.com/louis-lau) for fixing the game scaling bug.

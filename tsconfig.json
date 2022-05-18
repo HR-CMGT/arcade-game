@@ -1,15 +1,21 @@
 {
     "compilerOptions": {
-        "sourceMap":  true,
-        "removeComments": true,
-        "target":"es6",
         "strict": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
         "strictPropertyInitialization": false,
-        "watch": true,
-        "outFile": "docs/js/main.js"
+        "module": "ES6",
+        "sourceMap": true,
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "lib": [
+            "es6",
+            "dom"
+        ]
     },
-    "exclude": [
-        "node_modules",
-        "docs"
+    "include": [
+        "./src/**/*",
+        "globals.d.ts"
     ]
 }
