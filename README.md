@@ -68,7 +68,7 @@ class Game {
     player:Player
 
     constructor() {
-        // pixi loader here
+        // loader here
     }
 
     doneLoading() {
@@ -105,12 +105,11 @@ In the above example you can see that the `Game.ts` class passes the joystick to
 ```typescript
 import { Joystick } from "./arcade/joystick"
 
-export class Player extends PIXI.Sprite {
+export class Player {
 
     joystick: Joystick
 
      constructor(joystick: Joystick) {
-        super(PIXI.Texture.WHITE)
         
         this.x = 100
         this.y = 100
@@ -122,12 +121,12 @@ export class Player extends PIXI.Sprite {
         document.addEventListener(this.joystick.ButtonEvents[0], () => this.changeColor())
     }
 
-    private changeColor(){
+    changeColor(){
         console.log("controller button pressed")
         this.tint = Math.random() * 0xFFFFFF
     }
 
-    public update() {
+    update() {
         this.x += this.joystick.X
         this.y += this.joystick.Y
 
@@ -144,15 +143,15 @@ export class Player extends PIXI.Sprite {
 <Br>
 <br>
 
-# Serve your game online
+# Serve your docs folder
 
 Your game needs to be hosted online, you can do this by enabling **github pages** and publishing the **docs** folder. 
 
 <br>
 
-## Build PIXI game
+## Build your game
 
-In Pixi, you need to run `npm run build` to create your final game build. This will create a `docs` folder that is ready to be hosted without a live server running. 
+In Pixi, Excalibur, or other game libraries, you can execute `npm build` to create your final game build. This will create a `docs` folder that is ready to be hosted. 
 
 <br>
 
@@ -190,7 +189,11 @@ The arcade cabinet window is 1440 x 900. You can set your game to this size usin
 
 ```typescript
 class Game {
-    constructor(){
+    constructor() {
+        // excalibur
+        super({ width: 900, height: 600 })
+    
+        // pixi
         this.pixi = new PIXI.Application({ width: 1440, height: 900})
     }
 }
