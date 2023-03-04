@@ -39,7 +39,7 @@ class Game {
     joystickListener: EventListener
 
     constructor() {
-        // pixi loader here
+        // loader here
     }
 
     doneLoading() {
