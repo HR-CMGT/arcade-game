@@ -191,7 +191,7 @@ The arcade cabinet window is 1440 x 900. You can set your game to this size usin
 class Game {
     constructor() {
         // excalibur
-        super({ width: 900, height: 600 })
+        super({ width: 1440, height: 900 })
     
         // pixi
         this.pixi = new PIXI.Application({ width: 1440, height: 900})
