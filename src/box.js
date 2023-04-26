@@ -3,9 +3,9 @@ import { Joystick } from './arcade/joystick'
 
 export class Box extends PIXI.Sprite {
     
-    joystick : Joystick
+    #joystick;
     
-    constructor(joystick: Joystick) {
+    constructor(joystick) {
         super(PIXI.Texture.WHITE)
         this.width = 30
         this.height = 30
@@ -13,18 +13,18 @@ export class Box extends PIXI.Sprite {
         this.y = 100
         this.anchor.set(0.5)
 
-        this.joystick = joystick
-        document.addEventListener(this.joystick.ButtonEvents[0], () => this.changeColor())
+        this.#joystick = joystick
+        document.addEventListener(this.#joystick.ButtonEvents[0], () => this.#changeColor())
     }
 
-    private changeColor(){
+    #changeColor(){
         console.log("controller button pressed")
         this.tint = Math.random() * 0xFFFFFF
     }
 
-    public update() {
-        this.x += this.joystick.X
-        this.y += this.joystick.Y
+    update() {
+        this.x += this.#joystick.X
+        this.y += this.#joystick.Y
     }
 
 }

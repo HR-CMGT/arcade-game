@@ -2,49 +2,50 @@ import { Game } from "../game"
 import { Joystick } from "./joystick"
 
 export class Arcade {
-    private DEBUG: boolean
-    private joysticks: Joystick[]
-    private readonly REDIRECT_URL: string = "http://hr-cmgt.github.io/arcade-server"
-    private multiplayer: boolean = false
-    private game: Game
+    #DEBUG; //boolean
+    #joysticks; //Joystick[]
+    #REDIRECT_URL = "http://hr-cmgt.github.io/arcade-server"
+    #multiplayer = false
+    #game;
+
     // PROPERTIES
-    public get Joysticks(): Joystick[] { return this.joysticks }
+    get Joysticks() { return this.#joysticks }
 
     /**
      * Creates an arcade 'cabinet' 
      * @param mp 'true' for 2 joystick multiplayer Arcade (default single player)
      */
-    constructor(game: Game, mp: boolean = false, debug: boolean = false) {
-        this.game = game
-        this.multiplayer = mp
-        this.DEBUG = debug
-        this.joysticks = []
+    constructor(game, mp = false, debug = false) {
+        this.#game = game
+        this.#multiplayer = mp
+        this.#DEBUG = debug
+        this.#joysticks = []
 
-        if (this.DEBUG) this.showStatus("Gamepad is NOT connected. Press a button to connect")
+        if (this.#DEBUG) this.#showStatus("Gamepad is NOT connected. Press a button to connect")
 
-        document.addEventListener("redirect", () => this.onRedirect())
-        window.addEventListener("gamepadconnected", (e: Event) => this.onGamePadConnected(e as GamepadEvent))
-        window.addEventListener("gamepaddisconnected", (e: Event) => this.onGamePadDisconnected(e as GamepadEvent))
+        document.addEventListener("redirect", () => this.#onRedirect())
+        window.addEventListener("gamepadconnected", (e) => this.#onGamePadConnected(e))
+        window.addEventListener("gamepaddisconnected", (e) => this.#onGamePadDisconnected(e))
     }
 
     /**
      * Handles redirect fired from joystick
      */
-    private onRedirect(): void {
-        if (this.DEBUG) { console.log('redirect!!') }
-        window.location.href = this.REDIRECT_URL
+    #onRedirect() {
+        if (this.#DEBUG) { console.log('redirect!!') }
+        window.location.href = this.#REDIRECT_URL
     }
 
     /**
      * Handles connecting a joystick
      * @param e Gamepad event
      */
-    private onGamePadConnected(e: GamepadEvent): void {
-        if (this.DEBUG) {
+    #onGamePadConnected(e) {
+        if (this.#DEBUG) {
             console.log('Game pad connected')
             console.log("Joystick number: " + e.gamepad.index)
         }
-        if ((!this.multiplayer && this.joysticks.length == 0) || this.multiplayer) {
+        if ((!this.#multiplayer && this.#joysticks.length == 0) || this.#multiplayer) {
             let joystick = this.createAndAddJoystick(e.gamepad.index, 6)
 
             joystick.PreviousGamepad = joystick.Gamepad
@@ -54,18 +55,18 @@ export class Arcade {
             }
         }
 
-        if (this.DEBUG) this.removeStatus()
+        if (this.#DEBUG) this.#removeStatus()
     }
 
     /**
      * Handles disconnecting a joystick
      * @param e Gamepad event
      */
-    private onGamePadDisconnected(e: GamepadEvent): void {
-        if (this.DEBUG) { console.log('Game pad disconnected') }
-        if (this.DEBUG) this.showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.")
+    #onGamePadDisconnected(e) {
+        if (this.#DEBUG) { console.log('Game pad disconnected') }
+        if (this.#DEBUG) this.#showStatus("Gamepad is NOT connected. Connect the gamepad and press a button.")
         this.removeJoystick(e.gamepad.index)
-        this.game.disconnect()
+        this.#game.disconnect()
     }
 
     /**
@@ -73,14 +74,14 @@ export class Arcade {
      * @param joystickNumber Unique identifier given by the joystick
      * @param numOfButtons Sets number of buttons on joystick
      */
-    public createAndAddJoystick(joystickNumber: number, numOfButtons: number): Joystick {
+    createAndAddJoystick(joystickNumber, numOfButtons) {
         let joystickCheck = this.getJoystickByNumber(joystickNumber)
         if (joystickCheck != null) {
             return joystickCheck
         }
 
-        let joystickNew = new Joystick(joystickNumber, numOfButtons, this.DEBUG)
-        this.joysticks[joystickNumber] = joystickNew
+        let joystickNew = new Joystick(joystickNumber, numOfButtons, this.#DEBUG)
+        this.#joysticks[joystickNumber] = joystickNew
         if (joystickNew) {
             document.dispatchEvent(new CustomEvent("joystickcreated", { detail: joystickNumber }))
             console.log("joystick created")
@@ -92,16 +93,16 @@ export class Arcade {
      * Removes a Joystick from this arcade
      * @param joystickNumber Unique identifier of the joystick
      */
-    public removeJoystick(joystickNumber: number): void {
+    removeJoystick(joystickNumber) {
         let joystickCheck = this.getJoystickByNumber(joystickNumber)
         if (joystickCheck == null) {
             return
         }
 
-        var index = this.joysticks.indexOf(joystickCheck)
-        this.joysticks[index].destroy()
+        var index = this.#joysticks.indexOf(joystickCheck)
+        this.#joysticks[index].destroy()
         if (index > -1) {
-            this.joysticks.splice(index, 1)
+            this.#joysticks.splice(index, 1)
         }
     }
 
@@ -109,8 +110,8 @@ export class Arcade {
      * Get a Joystick with its unique identifier
      * @param joystickNumber Unique identifier given by the joystick
      */
-    public getJoystickByNumber(joystickNumber: number): any {
-        for (let joystick of this.joysticks) {
+    getJoystickByNumber(joystickNumber) {
+        for (let joystick of this.#joysticks) {
             if (joystick.JoystickNumber == joystickNumber) {
                 return joystick
             }
@@ -118,7 +119,7 @@ export class Arcade {
         return null
     }
 
-    private showStatus(content: string) {
+    #showStatus(content) {
         let container
         let p
         if (!(container = document.getElementsByTagName("status")[0])) {
@@ -136,7 +137,7 @@ export class Arcade {
         }
     }
 
-    private removeStatus() {
+    #removeStatus() {
         let status
         if (status = document.getElementsByTagName("status")[0]) {
             status.remove()
