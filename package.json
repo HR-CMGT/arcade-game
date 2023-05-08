@@ -1,7 +1,8 @@
 {
     "name": "pixi-startproject",
     "version": "1.0.0",
-    "description": "Dit is een startproject voor het werken met PixiJS, Typescript en OOP. Je kan deze repository downloaden en vervolgens installeren met:",
+    "main": "./src/arcade/arcade.js",
+    "description": "Dit is een startproject voor de arcadekast",
     "scripts": {
         "start": "parcel src/index.html --dist-dir docs",
         "build": "parcel build src/index.html --dist-dir docs --public-url ./"
