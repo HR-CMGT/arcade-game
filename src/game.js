@@ -20,7 +20,7 @@ export class Game {
 
         // create arcade cabinet with 2 joysticks (with 6 buttons)
         // this.#arcade = new Arcade(this)
-        this.#arcade = new Arcade(this, false, true)
+        this.#arcade = new Arcade(this, true, true)
         
         // // The game must wait for de joysticks to connect
         console.log("waiting for joysticks to connect")

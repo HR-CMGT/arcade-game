@@ -105,7 +105,7 @@ export class Joystick {
         return b == 1.0
     }
 
-    #destroy() {
+    destroy() {
         if (this.#DEBUG) this.debugPanel.remove()
     }
 }

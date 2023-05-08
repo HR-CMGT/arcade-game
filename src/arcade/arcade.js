@@ -100,7 +100,9 @@ export class Arcade {
         }
 
         var index = this.#joysticks.indexOf(joystickCheck)
-        this.#joysticks[index].destroy()
+        if(typeof this.#joysticks[index].destroy === 'function'){
+            this.#joysticks[index].destroy()
+        }
         if (index > -1) {
             this.#joysticks.splice(index, 1)
         }
