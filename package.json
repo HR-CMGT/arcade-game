@@ -1,7 +1,6 @@
 {
-    "name": "pixi-startproject",
-    "version": "1.0.1",
-    "main": "./src/arcade/arcade.js",
+    "name": "arcade-game",
+    "version": "1.0.0",
     "description": "Dit is een startproject voor de arcadekast",
     "scripts": {
         "start": "parcel src/index.html --dist-dir docs",
