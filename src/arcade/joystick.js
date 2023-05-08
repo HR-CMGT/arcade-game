@@ -17,8 +17,9 @@ export class Joystick {
 
     #gamepad; //Gamepad
     #previousGamepad; //Gamepad
+    #previousJoystickDirection;
 
-    #debugPanell //DebugPanel
+    // #debugPanell //DebugPanel
 
     // PROPERTIES
     // Axes as booleans
@@ -59,10 +60,23 @@ export class Joystick {
             this.#buttonEvents.push('joystick' + this.JoystickNumber + 'button' + (i))
         }
 
+        this.#buttonEvents.push('joystick' + this.JoystickNumber + 'neutral');
+        this.#buttonEvents.push('joystick' + this.JoystickNumber + 'left');
+        this.#buttonEvents.push('joystick' + this.JoystickNumber + 'right');
+        this.#buttonEvents.push('joystick' + this.JoystickNumber + 'up');
+        this.#buttonEvents.push('joystick' + this.JoystickNumber + 'down');
+
+        this.#previousJoystickDirection = 'neutral';
+
         if (this.#DEBUG) { this.debugPanel = new DebugPanel(this, this.#numberOfBUttons) }
     }
 
     update() {
+        if(typeof this.#gamepad === 'undefined' ||
+            typeof this.#gamepad.index === 'undefined' ||
+            typeof navigator.getGamepads()[this.#gamepad.index] === 'undefined'){
+            return;
+        }
         let gamepad = navigator.getGamepads()[this.#gamepad.index]
         if (gamepad) { this.#readGamepad(gamepad) }
     }
@@ -91,7 +105,29 @@ export class Joystick {
 
             this.debugPanel.update()
         }
+        
+        if(this.Left && this.#previousJoystickDirection !== 'left'){
+            this.#previousJoystickDirection = 'left';
+            document.dispatchEvent(new Event('joystick' + this.JoystickNumber + 'left'))
+        }
+        if(this.Right && this.#previousJoystickDirection !== 'right'){
+            this.#previousJoystickDirection = 'right';
+            document.dispatchEvent(new Event('joystick' + this.JoystickNumber + 'right'))
+        }
+        if(this.Up && this.#previousJoystickDirection !== 'up'){
+            this.#previousJoystickDirection = 'up';
+            document.dispatchEvent(new Event('joystick' + this.JoystickNumber + 'up'))
+        }
+        if(this.Down && this.#previousJoystickDirection !== 'down'){
+            this.#previousJoystickDirection = 'down';
+            document.dispatchEvent(new Event('joystick' + this.JoystickNumber + 'down'))
+        }
+        if(this.Neutral && this.#previousJoystickDirection !== 'neutral'){
+            this.#previousJoystickDirection = 'neutral';
+            document.dispatchEvent(new Event('joystick' + this.JoystickNumber + 'neutral'))
+        }
 
+        // console.log(this.#previousJoystickDirection);
         this.#previousGamepad = gamepad
     }
     /**
