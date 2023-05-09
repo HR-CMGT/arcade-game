@@ -1,11 +1,11 @@
 {
     "name": "arcade-game",
     "version": "1.0.0",
-    "main": "docs/index.6d335c2e.js",
+    "main": "docs/arcade.js",
     "description": "Dit is een startproject voor de arcadekast",
     "scripts": {
         "start": "parcel src/index.html --dist-dir docs",
-        "build": "parcel build src/index.html --dist-dir docs --public-url ./"
+        "build": "parcel build --no-content-hash src/arcade/arcade.js --dist-dir docs --public-url ./"
     },
     "keywords": [],
     "author": "",
