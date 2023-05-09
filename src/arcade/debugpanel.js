@@ -1,4 +1,3 @@
-import { Joystick } from "./joystick"
 
 //#region Template
 const template = document.createElement('template');

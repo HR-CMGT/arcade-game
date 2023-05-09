@@ -1,4 +1,4 @@
-import { Game } from "../game"
+
 import { Joystick } from "./joystick"
 
 export class Arcade {

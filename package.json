@@ -4,10 +4,10 @@
     "description": "Dit is een startproject voor de arcadekast",
     "source": "src/arcade/arcade.js",
     "exports": {
-        "require": "./docs/arcade.cjs",
+        "require": "./docs/arcade.js",
         "default": "./docs/arcade.modern.js"
     },
-    "main": "docs/arcade.cjs",
+    "main": "docs/arcade.js",
     "module": "docs/arcade.module.js",
     "unpkg": "docs/arcade.umd.js",
     "scripts": {
