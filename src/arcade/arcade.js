@@ -1,7 +1,7 @@
 
 import { Joystick } from "./joystick"
 
-export class Arcade {
+export default class Arcade {
     #DEBUG; //boolean
     #joysticks; //Joystick[]
     #REDIRECT_URL = "http://hr-cmgt.github.io/arcade-server"

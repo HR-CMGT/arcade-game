@@ -1,4 +1,4 @@
-export class Arcade {
+export default class Arcade {
     /**
      * Creates an arcade 'cabinet'
      * @param mp 'true' for 2 joystick multiplayer Arcade (default single player)
