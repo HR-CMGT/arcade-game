@@ -2,7 +2,7 @@
     "name": "arcade-game",
     "version": "1.0.0",
     "description": "Dit is een startproject voor de arcadekast",
-    "source": "src/arcade/arcade.js",
+    "source": "./src/arcade/arcade.js",
     "exports": {
         "require": "./docs/arcade.js",
         "default": "./docs/arcade.modern.js"
@@ -19,5 +19,6 @@
     "devDependencies": {
         "querystring-es3": "^0.2.1",
         "microbundle": "^0.15.1"
-    }
+    },
+    "types": "./index.d.ts"
 }
