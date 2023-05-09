@@ -7,9 +7,9 @@
         "require": "./docs/arcade.js",
         "default": "./docs/arcade.modern.js"
     },
-    "main": "docs/arcade.module.js",
-    "module": "docs/arcade.module.js",
-    "unpkg": "docs/arcade.umd.js",
+    "main": "./docs/arcade.js",
+    "module": "./docs/arcade.module.js",
+    "unpkg": "./docs/arcade.umd.js",
     "scripts": {
         "build": "microbundle", 
         "dev": "microbundle watch"
