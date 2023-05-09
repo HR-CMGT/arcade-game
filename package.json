@@ -1,6 +1,7 @@
 {
     "name": "arcade-game",
     "version": "1.0.0",
+    "main": "docs/index.6d335c2e.js",
     "description": "Dit is een startproject voor de arcadekast",
     "scripts": {
         "start": "parcel src/index.html --dist-dir docs",
