@@ -26,16 +26,9 @@ Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one
 The arcade class will detect if you use a gamepad 🎮 or the arcade cabinet joystick 🕹
 
 ### Add library to package.json
- ```json
-  "dependencies": {
-    "arcade-game": "git@github.com:HR-CMGT/arcade-game.git"
-  }
- ```
-
- ### Run NPM install / update
- Run install on new install. If prompted to update this library, please run update.
+Run next line in your project terminal:
  ```cli
- npm install
+npm install git@github.com:HR-CMGT/arcade-game.git
  ```
 
  ### Usage in game class
