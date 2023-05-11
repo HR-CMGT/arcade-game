@@ -4,12 +4,12 @@
     "description": "Dit is een startproject voor de arcadekast",
     "source": "./src/arcade/arcade.js",
     "exports": {
-        "require": "./docs/arcade.js",
-        "default": "./docs/arcade.modern.js"
+        "require": "./dist/arcade.module.js",
+        "default": "./dist/arcade.modern.js"
     },
-    "main": "./docs/arcade.js",
-    "module": "./docs/arcade.module.js",
-    "unpkg": "./docs/arcade.umd.js",
+    "main": "./dist/arcade.js",
+    "module": "./dist/arcade.module.js",
+    "unpkg": "./dist/arcade.umd.js",
     "scripts": {
         "build": "microbundle", 
         "dev": "microbundle watch"
