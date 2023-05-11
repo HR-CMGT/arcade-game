@@ -4,7 +4,7 @@
     "description": "Dit is een startproject voor de arcadekast",
     "source": "./src/arcade/arcade.js",
     "exports": {
-        "require": "./dist/arcade.module.js",
+        "require": "./dist/arcade.js",
         "default": "./dist/arcade.modern.js"
     },
     "main": "./dist/arcade.js",
