@@ -3,11 +3,8 @@
     "version": "1.0.0",
     "description": "Dit is een startproject voor de arcadekast",
     "source": "./src/arcade/arcade.js",
-    "exports": {
-        "require": "./dist/arcade.js",
-        "default": "./dist/arcade.modern.js"
-    },
-    "main": "./dist/arcade.js",
+    "exports": "./dist/arcade.modern.mjs",
+    "main": "./dist/arcade.cjs",
     "module": "./dist/arcade.module.js",
     "unpkg": "./dist/arcade.umd.js",
     "scripts": {
