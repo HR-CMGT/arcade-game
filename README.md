@@ -25,119 +25,67 @@ Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one
 
 The arcade class will detect if you use a gamepad 🎮 or the arcade cabinet joystick 🕹
 
-- Place the arcade folder from this repository in the `src` folder of your game.
-- Create an `arcade` property and add `this.arcade = new Arcade()`  to `Game.ts`. 
-- Create the event listener that waits for the joysticks connection.
+### Add library to package.json
+ ```json
+  "dependencies": {
+    "arcade-game": "git@github.com:HR-CMGT/arcade-game.git"
+  }
+ ```
 
-GAME.TS
-```typescript
-import { Arcade } from "./arcade/arcade"
+ ### Run NPM install / update
+ Run install on new install. If prompted to update this library, please run update.
+ ```cli
+ npm install
+ ```
 
-class Game {
+ ### Usage in game class
+ ```javascript
+import { Arcade } from "arcade-game"
 
-    arcade:Arcade
-    joystickListener: EventListener
+export class Game {
 
-    constructor() {
-        // loader here
-    }
-
-    doneLoading() {
-        this.arcade = new Arcade(this)
-
-        // The game must wait for the joysticks to connect
-        this.joystickListener = (e: Event) => this.joyStickConnected(e as CustomEvent)
-        document.addEventListener("joystickcreated", this.joystickListener)
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
-## The joystick is connected
-
-After the joystick is connected, you can continue with setting up your game.
-
-```typescript
-class Game {
-
-    arcade:Arcade
-    joystickListener: EventListener
-    player:Player
+    #arcade;
+    #joystickListener;
 
     constructor() {
-        // loader here
+        //TODO: add reference to startGame()
     }
 
-    doneLoading() {
-        // see above
+    startGame() {
+        this.#arcade = new Arcade(this, false, true);
+
+        this.#joystickListener = (e) => this.#joyStickFound(e)
+        document.addEventListener("joystickcreated",  this.#joystickListener)
     }
 
-    joyStickConnected(e: CustomEvent) {
+    #joyStickFound(e) {
+        let joystick = this.#arcade.Joysticks[e.detail]
         
-        let joystick = this.arcade.Joysticks[e.detail]
-
-        // just logging the buttons to check what is available
+        // debug, this shows you the names of the buttons when they are pressed
         for (const buttonEvent of joystick.ButtonEvents) {
             document.addEventListener(buttonEvent, () => console.log(buttonEvent))
         }
 
-        // pass the joystick to the player class
-        this.player = new Player(joystick)
-
-        // you can also handle single buttons instead of the whole joystick:
-        // button 0 is the first button, X-Button on a PS4 controller
-        // document.addEventListener(joystick.ButtonEvents[0], () => this.handleJump())
-    }
-}
-```
-
-<br>
-<Br>
-<br>
-
-## Using the joystick in the player class
-
-In the above example you can see that the `Game.ts` class passes the joystick to the player : `new Player(joystick)`. The player can now also listen for joystick events. Note that we use a default white texture here for the sprite.
-
-```typescript
-import { Joystick } from "./arcade/joystick"
-
-export class Player {
-
-    joystick: Joystick
-
-     constructor(joystick: Joystick) {
-        
-        this.x = 100
-        this.y = 100
-        this.width = 30
-        this.height = 30
-
-        this.joystick = joystick
-
-        document.addEventListener(this.joystick.ButtonEvents[0], () => this.changeColor())
+        this.update();
     }
 
-    changeColor(){
-        console.log("controller button pressed")
-        this.tint = Math.random() * 0xFFFFFF
-    }
-
+    //TODO: incoporate in library game loop, instead of an update with requestAnimationFrame
     update() {
-        this.x += this.joystick.X
-        this.y += this.joystick.Y
+        for (let joystick of this.#arcade.Joysticks) {
+            joystick.update()
+        }
 
-        // you can also check the left, right, up, down status individually
-        // if(this.joystick.Left)  this.x-=2
-        // if(this.joystick.Right) this.x+=2
-        // if(this.joystick.Up)    this.y-=2
-        // if(this.joystick.Down)  this.y+=2
+        requestAnimationFrame(() => this.update());
+    }
+
+    disconnect() {
+        document.removeEventListener("joystickcreated", this.#joystickListener)
     }
 }
-```
+
+new Game()
+
+ ```
 
 <br>
 <Br>
