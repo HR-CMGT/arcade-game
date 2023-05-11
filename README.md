@@ -87,6 +87,16 @@ new Game()
 
  ```
 
+### En-/disable Arcade features
+When creating an Arcade object, you can change a few settings
+```javascript
+let arcade = new Arcade(this, false, true);
+```
+The params are:
+* <strong>this</strong>; needs current game class > do <strong>not</strong> change
+* <strong>false</strong>; use multiplayer features? Set to true for multiplayer.
+* <strong>true</strong>; use debug features? Set to false when done debugging.
+
 <br>
 <Br>
 <br>
