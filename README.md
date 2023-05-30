@@ -13,14 +13,6 @@
 <br>
 <br>
 
-## Example project
-
-Connect your PS4 / XBox controller to your laptop with bluetooth, or connect one of the CMGT arcade sticks. Then try [this online example](https://hr-cmgt.github.io/arcade-game/) or download and run this repository, to see if you can control the box.
-
-<br>
-<br>
-<br>
-
 ## 🕹 🎮 Joystick and Gamepad
 
 The arcade class will detect if you use a gamepad 🎮 or the arcade cabinet joystick 🕹
