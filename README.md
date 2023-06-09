@@ -4,7 +4,7 @@
 
 ## Adding your game to the Arcade Cabinet
 
-- Example project
+- [Example project with Excalibur](https://github.com/HR-CMGT/PRG04-ExcaliburJS-Arcade-voorbeeld)
 - Joystick and gamepad
 - Serve your game online
 - Game Size
@@ -158,12 +158,21 @@ If your aspect ratio is not `16:9` you can instead use `height:100vh`.
 ## Known issues
 
 - Certain versions of Chrome on Windows detect extra undefined/unknown Gamepads, which can cause issues with this library.
-- Safari on Mac OS seems to miss button clicks?
 
 <br>
 <br>
 <br>
 
+## Example project
+ 
+- [Example project with Excalibur](https://github.com/HR-CMGT/PRG04-ExcaliburJS-Arcade-voorbeeld)
+ 
+<br>
+<br>
+<br>
+ 
+ 
 ## Credits
 
+- Leanne, Bob for building the Arcade Stick Controls
 - [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
