@@ -158,6 +158,7 @@ If your aspect ratio is not `16:9` you can instead use `height:100vh`.
 ## Known issues
 
 - Certain versions of Chrome on Windows detect extra undefined/unknown Gamepads, which can cause issues with this library.
+- Firefox does not detect all gamepad buttons.
 
 <br>
 <br>
