@@ -73,8 +73,10 @@ export class Player extends Actor {
         if (this.gamepad === null) {
             return
         }
-        const axisValue = this.gamepad.getAxes(Axes.LeftStickX)
-        console.log(axisValue)
+        const speed = 40
+        const xValue = this.gamepad.getAxes(Axes.LeftStickX)
+        const yValue = this.gamepad.getAxes(Axes.LeftStickY)
+        this.vel = new Vector(xValue * speed, yValue * speed)
     }
 }
 ```
