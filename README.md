@@ -1,86 +1,83 @@
-# Arcade Game
+# CMGT Arcade Kast
 
 ![screenshot](./screenshot.png)
 
-## Adding your game to the Arcade Cabinet
+Hieronder vind je de instructies voor het toevoegen van je game aan de arcade kast:
 
-- [Example project with Excalibur](https://github.com/HR-CMGT/PRG04-ExcaliburJS-Arcade-voorbeeld)
-- Joystick and gamepad
-- Serve your game online
-- Game Size
+- Voeg gamepad support toe
+- Zorg dat je game in 16:9 verhouding is
+- Publiceer je game in de docs map op github pages
+- Voeg de url van je github pages game toe aan de JSON file van de arcade kast
 
 <br>
 <br>
 <br>
 
-## 🕹 🎮 Joystick and Gamepad
+## Gamepad
 
-The arcade class will detect if you use a gamepad 🎮 or the arcade cabinet joystick 🕹
+Je kan de [Excalibur Gamepad](https://excaliburjs.com/docs/gamepad) gebruiken om gebruikersinput te lezen.
 
-### Add library to package.json
-Run next line in your project terminal:
- ```cli
-npm install git@github.com:HR-CMGT/arcade-game.git
- ```
+GAME.JS - test of gamepad werkt:
 
- ### Usage in game class
- ```javascript
-import { Arcade } from "arcade-game"
-
-export class Game {
-
-    #arcade;
-    #joystickListener;
+```javascript
+export class Game extends Engine {
 
     constructor() {
-        //TODO: add reference to startGame()
+        super()
+        this.start(ResourceLoader).then(() => this.startGame())
     }
 
-    startGame() {
-        this.#arcade = new Arcade(this, false, true);
-
-        this.#joystickListener = (e) => this.#joyStickFound(e)
-        document.addEventListener("joystickcreated",  this.#joystickListener)
-    }
-
-    #joyStickFound(e) {
-        let joystick = this.#arcade.Joysticks[e.detail]
-        
-        // debug, this shows you the names of the buttons when they are pressed
-        for (const buttonEvent of joystick.ButtonEvents) {
-            document.addEventListener(buttonEvent, () => console.log(buttonEvent))
-        }
-
-        this.update();
-    }
-
-    //TODO: incoporate in library game loop, instead of an update with requestAnimationFrame
-    update() {
-        for (let joystick of this.#arcade.Joysticks) {
-            joystick.update()
-        }
-
-        requestAnimationFrame(() => this.update());
-    }
-
-    disconnect() {
-        document.removeEventListener("joystickcreated", this.#joystickListener)
+    startGame(){
+        this.input.gamepads.enabled = true
+        this.input.gamepads.on('connect', (connectevent) => {
+            console.log('Gamepad connected', connectevent)
+            connectevent.gamepad.on('button', (buttonevent) => {
+                if (buttonevent.button === Buttons.Face1) {
+                    console.log("jump")
+                }
+            })
+            connectevent.gamepad.on('axis', (axisevent) => {
+                console.log(axisevent.axis, axisevent.value)
+                if (axisevent.value > 0.5) {
+                    console.log("move right")
+                }
+            })
+        })
     }
 }
-
-new Game()
-
- ```
-
-### En-/disable Arcade features
-When creating an Arcade object, you can change a few settings
-```javascript
-let arcade = new Arcade(this, false, true);
 ```
-The params are:
-* <strong>this</strong>; needs current game class > do <strong>not</strong> change
-* <strong>false</strong>; use multiplayer features? Set to true for multiplayer.
-* <strong>true</strong>; use debug features? Set to false when done debugging.
+PLAYER.JS - bewegen met gamepad
+
+In de player is een property voor de gamepad. Als de property gevuld is, dan kan je in de `onPreUpdate` elk frame kijken wat de positie van de sticks is.
+
+```javascript
+export class Player extends Actor {
+
+    gamepad = null
+
+    onInitialize(engine) {
+        engine.input.gamepads.on('connect', (connectevent) => {
+            console.log('Gamepad connected', connectevent)
+            this.gamepad = connectevent.gamepad
+            this.gamepad.on('button', (buttonevent) => this.buttonPressed(buttonevent))
+        })
+    }
+
+    buttonPressed(buttonevent) {
+        if (buttonevent.button === Buttons.Face1) {
+            console.log("shoot!")
+        }
+    }
+
+    onPreUpdate(engine) {
+        if (this.gamepad === null) {
+            return
+        }
+        const axisValue = this.gamepad.getAxes(Axes.LeftStickX)
+        console.log(axisValue)
+    }
+}
+```
 
 <br>
 <Br>
@@ -88,13 +85,7 @@ The params are:
 
 # Serve your docs folder
 
-Your game needs to be hosted online, you can do this by enabling **github pages** and publishing the **docs** folder. 
-
-<br>
-
-## Build your game
-
-In Pixi, Excalibur, or other game libraries, you can execute `npm build` to create your final game build. This will create a `docs` folder that is ready to be hosted. 
+Your game needs to be hosted online, you can do this by enabling **github pages**, then build and publish the **docs** folder. 
 
 <br>
 
@@ -155,23 +146,7 @@ If your aspect ratio is not `16:9` you can instead use `height:100vh`.
 <br>
 <br>
 
-## Known issues
-
-- Certain versions of Chrome on Windows detect extra undefined/unknown Gamepads, which can cause issues with this library.
-- Firefox does not detect all gamepad buttons.
-
-<br>
-<br>
-<br>
-
-## Example project
- 
-- [Example project with Excalibur](https://github.com/HR-CMGT/PRG04-ExcaliburJS-Arcade-voorbeeld)
- 
-<br>
-<br>
-<br>
- 
+> Why is half this page in english and half in dutch? we do not know.
  
 ## Credits
 
