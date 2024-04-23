@@ -85,6 +85,26 @@ export class Player extends Actor {
 <Br>
 <br>
 
+## Startbutton verwijderen
+
+Op de CMGT Arcade kast heb je geen starbutton nodig. 
+
+GAME.JS
+
+```js
+export class Game extends Engine {
+    constructor(){
+        super({
+            suppressPlayButton: true
+        })
+    }
+}
+```
+
+<br>
+<Br>
+<br>
+
 # Serve your docs folder
 
 Your game needs to be hosted online, you can do this by enabling **github pages**, then build and publish the **docs** folder. 
