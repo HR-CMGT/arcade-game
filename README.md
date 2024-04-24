@@ -5,8 +5,8 @@
 Hieronder vind je de instructies voor het toevoegen van je game aan de arcade kast:
 
 - Voeg gamepad support toe, zorg dat er geen mouseclicks nodig zijn
-- Zorg dat je game in 16:9 verhouding is, liefst 1440x900 pixels. 
-- Zet `fitScreen` aan zodat je game automatisch schaalt als de resolutie net iets te groot of te klein is.
+- Zorg dat je game in 16:9 of 16:10 verhouding is, zodat de game goed schaalt naar 1440x900 pixels. 
+- Zet `fitScreen` aan zodat je game automatisch schaalt.
 - Publiceer je game in de `docs` map op jouw eigen github pages
 - Geef de url van je github pages game door aan CMGT.
 - Je kan ook je eigen custom image toevoegen.
