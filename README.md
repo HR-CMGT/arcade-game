@@ -8,8 +8,8 @@ Hieronder vind je de instructies voor het toevoegen van je game aan de arcade ka
 - Zorg dat je game in 16:9 verhouding is, liefst 1440x900 pixels. 
 - Zet `fitScreen` aan zodat je game automatisch schaalt als de resolutie net iets te groot of te klein is.
 - Publiceer je game in de `docs` map op jouw eigen github pages
-- Voeg de url van je github pages game toe aan de JSON file van de arcade kast
-- Je kan ook je eigen custom cartridge toevoegen
+- Geef de url van je github pages game door aan CMGT.
+- Je kan ook je eigen custom image toevoegen.
 - Je kan ***Makecode Arcade*** games toevoegen. Je hoeft dan alleen de link naar je game te plakken.
 
 <br>
@@ -139,28 +139,30 @@ class Samurai extends Actor {
 <Br>
 <br>
 
-# Serve your docs folder
+## Game publiceren
 
-Your game needs to be hosted online, you can do this by enabling **github pages**, then build and publish the **docs** folder. 
+Bouw de `docs` folder van je game. Meestal doe je dit met `npm run build`. Op github moet je **github pages** aanzetten, vervolgens kan je `main/docs` kiezen. Je game staat nu live.
 
-<br>
+<br><br><br>
 
-## Add game to arcade cabinet JSON
+## Game toevoegen aan arcade kast
 
-Your game `name` and `url` need to be listed in the [Games JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json). You can make a Pull Request for the arcade server repository, or ask one of the admins to add your game by sending the below information. You can test the arcade cabinet yourself at:  https://hr-cmgt.github.io/arcade-server/
+Je kan aan een docent vragen om je game toe te voegen aan de arcade kast. We hebben dan onderstaande info nodig:
 
 ```json
 [
     {
         "name": "Ruimtegruis",
         "url": "https://bpikaar.github.io/ruimtegruis/",
-        "genres" : [1,1,1,0,0,0,0,0,0],
-        "players" : 2,
+        "players" : 1,
         "cover": "cover_ruimtegruis.png",
         "makecode" : false
     }
 ]
 ```
+Je kan dit ook zelf doen! Ga dan naar https://hr-cmgt.github.io/arcade-server. Klik op `fork`. Je krijgt nu een kopie van de server. In die kopie kan je jouw game (of games) toevoegen aan de [JSON file](https://hr-cmgt.github.io/arcade-server/data/games.json).
+
+Als dat gelukt is klik je op ***Pull Request***. Als je request is goedgekeurd kan je dit testen op de arcade kast of via:  https://hr-cmgt.github.io/arcade-server/
 
 <br>
 <br>
@@ -168,11 +170,11 @@ Your game `name` and `url` need to be listed in the [Games JSON file](https://hr
 
 
 
-### Add cartridge image
+### Cartridge image
 
 ![screenshot](./cart.png)
 
-If you want, you can photoshop your own cartridge image for display in the server. [Download the base image here](./cart.png) 
+Je kan een eigen cartridge image gebruiken, [gebruik de lege cartridge als basis.](./cart.png) 
 
 <br>
 <br>
@@ -187,19 +189,24 @@ If you want, you can photoshop your own cartridge image for display in the serve
 
 # Makecode Arcade
 
-Je kan een link naar je makecode arcade game toevoegen aan de JSON file van de arcade kast. Zet `makecode` op `true` zodat je de juiste cartridge image krijgt.
+Je kan een link naar je [makecode arcade](https://arcade.makecode.com) game toevoegen aan de arcade kast. Geef de onderstaande info door aan een docent, of maak zelf een pull request (zie instructies hierboven). Zet `makecode` op `true` zodat je de juiste cartridge image krijgt.
 
 ![screenshot](./cart-makecode.png)
 
-
+```json
+{
+    "name": "Suzy the Witchy",
+    "url": "https://arcade.makecode.com/S05263-10706-41937-72354",
+    "players" : 1,
+    "cover": "",
+    "makecode": true
+}
+```
 
 <br>
 <br>
 <br>
 
-
-> Why is half this page in english and half in dutch? we do not know.
- 
 ## Credits
 
 - Leanne and Bob for building the Arcade Stick Controls for PixiJS (now deprecated).
