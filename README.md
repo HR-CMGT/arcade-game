@@ -110,7 +110,7 @@ export class Game extends Engine {
 
 ## Game Size
 
-De monitor in de arcade kast is 1440 x 900. Dit kan je instellen in `game.js`. Door `fitScreen` toe te voegen schaalt de game wel mee met kleinere of grotere schermen.
+De monitor in de arcade kast is 1440 x 900. Je game kan wel kleiner zijn, maar moet wel kunnen opschalen in de verhouding van 16:9 of 16:10. Dit kan je instellen in `game.js`. 
 
 ```typescript
 class Game {
