@@ -177,6 +177,27 @@ If you want, you can photoshop your own cartridge image for display in the serve
 <br>
 
 
+<br>
+<br>
+<br>
+
+
+
+# Makecode Arcade
+
+Je kan een link naar je makecode arcade game toevoegen aan de JSON file van de arcade kast.
+
+Zet "makecode" op true zodat je de juiste cartridge image krijgt.
+
+![screenshot](./cart-makecode.png)
+
+
+
+<br>
+<br>
+<br>
+
+
 > Why is half this page in english and half in dutch? we do not know.
  
 ## Credits
