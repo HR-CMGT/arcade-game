@@ -128,6 +128,39 @@ Your game `name` and `url` need to be listed in the [Games JSON file](https://hr
 ```
 
 <br>
+<br>
+<br>
+
+
+## Game Size
+
+De monitor in de arcade kast is 1440 x 900. Dit kan je instellen in `game.js`. Door `fitScreen` toe te voegen schaalt de game wel mee met kleinere of grotere schermen.
+
+```typescript
+class Game {
+    constructor() {
+        super({
+            displayMode: DisplayMode.FitScreen,
+            width: 1440, height: 900,
+        });
+    }
+}
+```
+Je kan de `draw size` van het `engine` argument gebruiken om items te positioneren:
+
+```js
+class Samurai extends Actor {
+    onInitalize(engine) {
+        this.pos = new Vector(engine.halfDrawWidth, engine.halfDrawHeight)
+
+    }
+}
+```
+
+
+<br>
+<br>
+<br>
 
 ### Add cartridge image
 
@@ -139,38 +172,10 @@ If you want, you can photoshop your own cartridge image for display in the serve
 <br>
 <br>
 
-## Game Size
-
-The arcade cabinet window is 1440 x 900. You can set your game to this size using: 
-
-```typescript
-class Game {
-    constructor() {
-        // excalibur
-        super({ width: 1440, height: 900 })
-    
-        // pixi
-        this.pixi = new PIXI.Application({ width: 1440, height: 900})
-    }
-}
-```
-
-If your game is smaller or bigger, you can scale the canvas using CSS. 
-
-```css
-canvas {
-    width:100vw;
-}
-```
-If your aspect ratio is not `16:9` you can instead use `height:100vh`.
-
-<br>
-<br>
-<br>
 
 > Why is half this page in english and half in dutch? we do not know.
  
 ## Credits
 
-- Leanne, Bob for building the Arcade Stick Controls
+- Leanne and Bob for building the Arcade Stick Controls for PixiJS (now deprecated).
 - [Tim Borowy](https://github.com/TimBorowy) and [GrunkHead Dave](https://github.com/Grunkhead) for the first iteration of the Game Arcade
