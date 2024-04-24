@@ -4,10 +4,12 @@
 
 Hieronder vind je de instructies voor het toevoegen van je game aan de arcade kast:
 
-- Voeg gamepad support toe
-- Zorg dat je game in 16:9 verhouding is
-- Publiceer je game in de docs map op github pages
+- Voeg gamepad support toe, zorg dat er geen mouseclicks nodig zijn
+- Zorg dat je game in 16:9 verhouding is, liefst 1440x900 pixels. 
+- Zet `fitScreen` aan zodat je game automatisch schaalt als de resolutie net iets te groot of te klein is.
+- Publiceer je game in de `docs` map op jouw eigen github pages
 - Voeg de url van je github pages game toe aan de JSON file van de arcade kast
+- Je kan ook je eigen custom cartridge toevoegen
 
 <br>
 <br>
@@ -100,6 +102,37 @@ export class Game extends Engine {
     }
 }
 ```
+<br>
+<br>
+<br>
+
+## Game Size
+
+De monitor in de arcade kast is 1440 x 900. Dit kan je instellen in `game.js`. Door `fitScreen` toe te voegen schaalt de game wel mee met kleinere of grotere schermen.
+
+```typescript
+class Game {
+    constructor() {
+        super({
+            displayMode: DisplayMode.FitScreen,
+            width: 1440, height: 900,
+        });
+    }
+}
+```
+Je kan de `draw size` van het `engine` argument gebruiken om items te positioneren:
+
+```js
+class Samurai extends Actor {
+    onInitalize(engine) {
+        this.pos = new Vector(engine.halfDrawWidth, engine.halfDrawHeight)
+
+    }
+}
+```
+
+
+
 
 <br>
 <Br>
@@ -132,35 +165,6 @@ Your game `name` and `url` need to be listed in the [Games JSON file](https://hr
 <br>
 
 
-## Game Size
-
-De monitor in de arcade kast is 1440 x 900. Dit kan je instellen in `game.js`. Door `fitScreen` toe te voegen schaalt de game wel mee met kleinere of grotere schermen.
-
-```typescript
-class Game {
-    constructor() {
-        super({
-            displayMode: DisplayMode.FitScreen,
-            width: 1440, height: 900,
-        });
-    }
-}
-```
-Je kan de `draw size` van het `engine` argument gebruiken om items te positioneren:
-
-```js
-class Samurai extends Actor {
-    onInitalize(engine) {
-        this.pos = new Vector(engine.halfDrawWidth, engine.halfDrawHeight)
-
-    }
-}
-```
-
-
-<br>
-<br>
-<br>
 
 ### Add cartridge image
 
