@@ -10,6 +10,7 @@ Hieronder vind je de instructies voor het toevoegen van je game aan de arcade ka
 - Publiceer je game in de `docs` map op jouw eigen github pages
 - Voeg de url van je github pages game toe aan de JSON file van de arcade kast
 - Je kan ook je eigen custom cartridge toevoegen
+- Je kan ***Makecode Arcade*** games toevoegen. Je hoeft dan alleen de link naar je game te plakken.
 
 <br>
 <br>
@@ -155,7 +156,8 @@ Your game `name` and `url` need to be listed in the [Games JSON file](https://hr
         "url": "https://bpikaar.github.io/ruimtegruis/",
         "genres" : [1,1,1,0,0,0,0,0,0],
         "players" : 2,
-        "cover": "cover_ruimtegruis.png"
+        "cover": "cover_ruimtegruis.png",
+        "makecode" : false
     }
 ]
 ```
@@ -185,9 +187,7 @@ If you want, you can photoshop your own cartridge image for display in the serve
 
 # Makecode Arcade
 
-Je kan een link naar je makecode arcade game toevoegen aan de JSON file van de arcade kast.
-
-Zet "makecode" op true zodat je de juiste cartridge image krijgt.
+Je kan een link naar je makecode arcade game toevoegen aan de JSON file van de arcade kast. Zet `makecode` op `true` zodat je de juiste cartridge image krijgt.
 
 ![screenshot](./cart-makecode.png)
 
