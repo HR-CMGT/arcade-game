@@ -4,14 +4,10 @@
 
 Hieronder vind je de instructies voor het toevoegen van je game aan de arcade kast:
 
-- Voeg gamepad support toe, zorg dat er geen mouseclicks nodig zijn
-- Zorg dat je game in 16:9 of 16:10 verhouding is, zodat de game goed schaalt naar 1440x900 pixels. 
-- Zet `fitScreen` aan zodat je game automatisch schaalt.
-- Disable de startbutton in het loadingscreen.
-- Publiceer je game in de `docs` map op jouw eigen github pages
-- Geef de url van je github pages game door aan CMGT.
-- Je kan ook je eigen custom image toevoegen.
-- Je kan ***Makecode Arcade*** games toevoegen. Je hoeft dan alleen de link naar je game te plakken.
+- [Gamepad support](#gamepad)
+- [Game size en startbutton](#game-size-en-startbutton)
+- [Game toevoegen aan arcade kast](#game-toevoegen-aan-arcade-kast)
+- [Makecode Arcade game toevoegen](#makecode-arcade)
 
 <br>
 <br>
@@ -19,12 +15,14 @@ Hieronder vind je de instructies voor het toevoegen van je game aan de arcade ka
 
 ## Gamepad
 
-Je kan de [Excalibur Gamepad](https://excaliburjs.com/docs/gamepad) gebruiken om gebruikersinput te lezen.
+Je kan de [Excalibur Gamepad](https://excaliburjs.com/docs/gamepad) gebruiken om gebruikersinput te lezen. Zie ook de [code snippets van prg4](https://github.com/HR-CMGT/PRG04-2023-2024/blob/main/snippets/gamepad.md).
 
-GAME.JS - test of gamepad werkt:
+GAME.JS
 
 ```javascript
 export class Game extends Engine {
+
+    mygamepad
 
     constructor() {
         super()
@@ -34,18 +32,8 @@ export class Game extends Engine {
     startGame(){
         this.input.gamepads.enabled = true
         this.input.gamepads.on('connect', (connectevent) => {
-            console.log('Gamepad connected', connectevent)
-            connectevent.gamepad.on('button', (buttonevent) => {
-                if (buttonevent.button === Buttons.Face1) {
-                    console.log("jump")
-                }
-            })
-            connectevent.gamepad.on('axis', (axisevent) => {
-                console.log(axisevent.axis, axisevent.value)
-                if (axisevent.value > 0.5) {
-                    console.log("move right")
-                }
-            })
+            console.log("gamepad detected")
+            this.mygamepad = connectevent.gamepad
         })
     }
 }
@@ -57,30 +45,21 @@ In de player is een property voor de gamepad. Als de property gevuld is, dan kan
 ```javascript
 export class Player extends Actor {
 
-    gamepad = null
-
-    onInitialize(engine) {
-        engine.input.gamepads.on('connect', (connectevent) => {
-            console.log('Gamepad connected', connectevent)
-            this.gamepad = connectevent.gamepad
-            this.gamepad.on('button', (buttonevent) => this.buttonPressed(buttonevent))
-        })
-    }
-
-    buttonPressed(buttonevent) {
-        if (buttonevent.button === Buttons.Face1) {
-            console.log("shoot!")
-        }
-    }
-
     onPreUpdate(engine) {
-        if (this.gamepad === null) {
+        if (engine.mygamepad === null) {
+            console.log("er is geen gamepad")
             return
         }
-        const speed = 40
-        const xValue = this.gamepad.getAxes(Axes.LeftStickX)
-        const yValue = this.gamepad.getAxes(Axes.LeftStickY)
-        this.vel = new Vector(xValue * speed, yValue * speed)
+
+        // bewegen
+        const xValue = engine.mygamepad.getAxes(Axes.LeftStickX)
+        const yValue = engine.myamepad.getAxes(Axes.LeftStickY)
+        this.vel = new Vector(xValue * 100, yValue * 100)
+
+        // schieten / springen
+        if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
+            console.log("jump!")
+        }
     }
 }
 ```
@@ -89,66 +68,29 @@ export class Player extends Actor {
 <Br>
 <br>
 
-## Startbutton verwijderen
+## Game Size en startbutton
 
-Op de CMGT Arcade kast heb je geen starbutton nodig. 
-
-GAME.JS
-
-```js
-export class Game extends Engine {
-    constructor(){
-        super({
-            suppressPlayButton: true
-        })
-    }
-}
-```
-<br>
-<br>
-<br>
-
-## Game Size
-
-De monitor in de arcade kast is 1440 x 900. Je game kan wel kleiner zijn, maar moet wel kunnen opschalen in de verhouding van 16:9 of 16:10. Dit kan je instellen in `game.js`. 
+De monitor in de arcade kast is 1440 x 900. De verhouding is 16/10. Dit kan je aanpassen in `game.js`. Door `fitScreen` toe te voegen schaalt de game mee, dus je kan wel kleinere games op de kast plaatsen, bv. 800x500. De startbutton kan je weglaten op de arcadekast.
 
 ```typescript
 class Game {
     constructor() {
         super({
             displayMode: DisplayMode.FitScreen,
-            width: 1440, height: 900,
+            width: 800, 
+            height: 500,
+            suppressPlayButton: true
         });
     }
 }
 ```
-Je kan de `draw size` van het `engine` argument gebruiken om items te positioneren:
-
-```js
-class Samurai extends Actor {
-    onInitalize(engine) {
-        this.pos = new Vector(engine.halfDrawWidth, engine.halfDrawHeight)
-
-    }
-}
-```
-
-
-
-
 <br>
 <Br>
 <br>
 
-## Game publiceren
-
-Bouw de `docs` folder van je game. Meestal doe je dit met `npm run build`. Op github moet je **github pages** aanzetten, vervolgens kan je `main/docs` kiezen. Je game staat nu live.
-
-<br><br><br>
-
 ## Game toevoegen aan arcade kast
 
-Je kan aan een docent vragen om je game toe te voegen aan de arcade kast. We hebben dan onderstaande info nodig:
+Zet je game live op github pages nadat je `npm run build` hebt gedaan. Daarna kan je aan een docent vragen om je game toe te voegen aan de arcade kast. We hebben dan onderstaande info nodig:
 
 ```json
 [
@@ -165,12 +107,6 @@ Je kan dit ook zelf doen! Ga dan naar https://hr-cmgt.github.io/arcade-server. K
 
 Als dat gelukt is klik je op ***Pull Request***. Als je request is goedgekeurd kan je dit testen op de arcade kast of via:  https://hr-cmgt.github.io/arcade-server/
 
-<br>
-<br>
-<br>
-
-
-
 ### Cartridge image
 
 ![screenshot](./cart.png)
@@ -180,12 +116,6 @@ Je kan een eigen cartridge image gebruiken, [gebruik de lege cartridge als basis
 <br>
 <br>
 <br>
-
-
-<br>
-<br>
-<br>
-
 
 
 # Makecode Arcade
