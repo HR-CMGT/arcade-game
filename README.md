@@ -38,9 +38,9 @@ export class Game extends Engine {
     }
 }
 ```
-PLAYER.JS - bewegen met gamepad
+PLAYER.JS 
 
-In de player is een property voor de gamepad. Als de property gevuld is, dan kan je in de `onPreUpdate` elk frame kijken wat de positie van de sticks is.
+Als de `engine.mygamepad` niet leeg is, dan kan je in de `onPreUpdate` elk frame kijken wat de positie van de sticks is.
 
 ```javascript
 export class Player extends Actor {
