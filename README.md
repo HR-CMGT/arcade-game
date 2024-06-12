@@ -70,7 +70,7 @@ export class Player extends Actor {
 
 ## Game Size en startbutton
 
-De monitor in de arcade kast is 1440 x 900. De verhouding is 16/10. Dit kan je aanpassen in `game.js`. Door `fitScreen` toe te voegen schaalt de game mee, dus je kan wel kleinere games op de kast plaatsen, bv. 800x500. De startbutton kan je weglaten op de arcadekast.
+De beeldverhouding van de arcade kast is 16/10. Je kan ook een verhouding van 16/9 gebruiken. Door `fitScreen` toe te voegen schaalt je game automatisch omhoog naar de afmeting van het scherm. De startbutton moet je weglaten op de arcadekast, omdat er geen muis is waarmee je op start kan klikken.
 
 ```typescript
 class Game {
@@ -84,6 +84,14 @@ class Game {
     }
 }
 ```
+Een kleinere resolutie vraagt minder CPU power om de game te draaien. Een aantal voorbeelden:
+
+- 800 x 450 
+- 800 x 500
+- 640 x 360
+- 1280 x 720
+- 1440 x 900
+ 
 <br>
 <Br>
 <br>
